@@ -9,6 +9,7 @@ from pathlib import Path
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 
+from testPage import open_test_page
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame2")
@@ -98,7 +99,7 @@ def open_sidebar_window(current_window):
         image=button_image_2,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("단어테스트"),
+        command=lambda: open_test_page(),
         relief="flat"
     )
     button_2.place(
