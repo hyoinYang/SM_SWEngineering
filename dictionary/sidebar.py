@@ -9,6 +9,8 @@ from pathlib import Path
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 
+from testPage import open_testPage_window
+from showToeicGrade import open_ybm_grade
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame2")
@@ -98,7 +100,7 @@ def open_sidebar_window(current_window):
         image=button_image_2,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("단어테스트"),
+        command=lambda: open_testPage_window(current_window),
         relief="flat"
     )
     button_2.place(
@@ -146,7 +148,7 @@ def open_sidebar_window(current_window):
         image=button_image_4,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("토익 고사장 안내"),
+        command=lambda: print("고사장 안내"),
         relief="flat"
     )
     button_4.place(
@@ -162,7 +164,7 @@ def open_sidebar_window(current_window):
         image=button_image_5,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("시험 점수 조회"),
+        command=lambda: open_ybm_grade(current_window),
         relief="flat"
     )
     button_5.place(
