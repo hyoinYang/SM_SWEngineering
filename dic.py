@@ -374,7 +374,7 @@ def open_dic_window(current_window):
     # 윈도우 실행
     current_window.mainloop()
 
-# 실행 확인할 수 있게 임시로 해놓은 것. 코드 병합하면 지울 예정
+# 실행 확인할 수 있게 임시로 해놓은 것. 코드 병합하면 지울 예정임
 if __name__ == "__main__":
     root = tk.Tk()
     my_windows_width = root.winfo_screenwidth()
