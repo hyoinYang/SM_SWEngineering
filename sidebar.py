@@ -170,3 +170,15 @@ def open_sidebar_window(current_window):
         height=100.0
     )
     current_window.mainloop()
+
+# 실행 확인할 수 있게 임시로 해놓은 것. 코드 병합하면 지울 예정임
+if __name__ == "__main__":
+    root = tk.Tk()
+    my_windows_width = root.winfo_screenwidth()
+    my_windows_height = root.winfo_screenheight()
+    app_width = 700
+    app_height = 550
+    center_width = (my_windows_width/2)-(app_width/2)
+    center_height = (my_windows_height/2)-(app_height/2)
+    root.geometry(f"{app_width}x{app_height}+{int(center_width)}+{int(center_height)}")
+    open_sidebar_window(root)
