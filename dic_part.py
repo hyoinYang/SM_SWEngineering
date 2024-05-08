@@ -27,7 +27,7 @@ def validate_sidebar(current_window):
 # 단어장에서 초록 박스를 버튼으로 여는 함수
 def open_green_box(parent_frame,white_box,dic_button,text):
 
-    dic_button_image = tk.PhotoImage(file="GUI/assets/frame0/button_6.png").subsample(2,2)
+    dic_button_image = tk.PhotoImage(file="assets/frame0/button_6.png").subsample(2,2)
     dic_button.config(
         command=lambda:close_green_box(parent_frame,white_box,dic_button,dictionary_box,text),
         image=dic_button_image
@@ -43,7 +43,7 @@ def open_green_box(parent_frame,white_box,dic_button,text):
 # 단어장에서 초록 박스를 버튼으로 닫는 함수
 def close_green_box(parent_frame,white_box,dic_button,dictionary_box,text):
     dictionary_box.pack_forget()
-    dic_button_image = tk.PhotoImage(file="GUI/assets/frame0/button_5.png").subsample(2,2)
+    dic_button_image = tk.PhotoImage(file="assets/frame0/button_5.png").subsample(2,2)
     dic_button.config(
         command=lambda:open_green_box(parent_frame,white_box,dic_button,text),
         image=dic_button_image
@@ -56,7 +56,7 @@ def create_scrollable_text(parent_frame, text): # text에는 박스에 있는 �
     white_box.pack(pady=10, fill="x")
 
     # 뜻 여는 버튼 생성
-    dic_button_image = tk.PhotoImage(file="GUI/assets/frame0/button_5.png").subsample(2,2)
+    dic_button_image = tk.PhotoImage(file="assets/frame0/button_5.png").subsample(2,2)
     dic_button = tk.Button(white_box,image = dic_button_image,relief="flat",command=lambda:open_green_box(parent_frame,white_box,dic_button,text),bd=0)
     dic_button.image = dic_button_image
     dic_button.pack(side="bottom",anchor="se")
