@@ -20,7 +20,7 @@ def open_non_member_login_link():
 ets_icon_path = "dictionary/assets/frame2/exam_place_seyeon_image/ets.png"
 member_login_icon_path = "dictionary/assets/frame2/exam_place_seyeon_image/member_login_icon.png"
 non_member_login_icon_path = "dictionary/assets/frame2/exam_place_seyeon_image/non_member_login_icon.png"
-gear_icon_path = "dictionary/assets/frame2/title_bar_frame_image.png"
+gear_icon_path = "dictionary/assets/frame2/title_bar_frame_image/gear_icon.png"
 menu_icon_path = "dictionary/assets/frame2/title_bar_frame_image/sidebar_icon.png"
 
 # -------------------------------- GUI 초기화 --------------------------------

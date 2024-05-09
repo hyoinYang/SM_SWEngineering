@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
+from PIL import Image, ImageTk
+import webbrowser
 
 # 데이터 코드 필요) 로그인 로직 작성
 def validate_login():
@@ -19,89 +21,81 @@ def validate_sidebar(current_window):
     #open_sidebar_window(current_window)
     current_window.destroy()
 
+# ------------------------------------ 링크 ----------------------------------
+def open_link():
+    # 시험 장소 조회 링크 열기
+    webbrowser.open("https://m.exam.toeic.co.kr/receipt/centerMap.php")
+
+def open_member_login_link():
+    # 회원 로그인 링크 열기
+    webbrowser.open("https://www.ybmnet.co.kr/common/login.asp?url=%2Fcommon%2FcertifyResponse.php%3FreturnUrl%3D%2Freceipt%2FconfirmList.php&what=m.exam.toeic.co.kr")
+
+def open_non_member_login_link():
+    # 비회원 로그인 링크 열기
+    webbrowser.open("https://certify.ybmnet.co.kr/common/certiModuleExam/certify_step1.asp?returnUrl=https%3A%2F%2Fm.exam.toeic.co.kr%2Fcommon%2FcertifyResponse.php%3FexamCate%3DTOE%26returnUrl%3D%252Freceipt%252FconfirmList.php&loginWhat=m.exam.toeic.co.kr&loginUrl=%2Fcommon%2FcertifyResponse.php%3FexamCate%3DTOE%26returnUrl%3D%252Freceipt%252FconfirmList.php")
+
+
+
 def open_ybm_grade(root):
-    # 기존 윈도우 내용 삭제
-    for widget in root.winfo_children():
-        widget.destroy()
 
-    # 스타일 설정
-    style = ttk.Style()
-    style.theme_use('clam')  # 스타일 테마 선택 (Tkinter의 기본 테마 중 하나)
+    # -------------------------------- 이미지 파일 경로 ---------------------------
+    ets_icon_path = "dictionary/assets/frame2/exam_place_seyeon_image/ets.png"
+    member_login_icon_path = "dictionary/assets/frame2/exam_place_seyeon_image/member_login_icon.png"
+    non_member_login_icon_path = "dictionary/assets/frame2/exam_place_seyeon_image/non_member_login_icon.png"
+    gear_icon_path = "dictionary/assets/frame2/title_bar_frame_image/gear_icon.png"
+    menu_icon_path = "dictionary/assets/frame2/title_bar_frame_image/sidebar_icon.png"
 
-    # 회색 바 스타일 설정
-    style.configure('TFrame', background='#d9d9d9')  # 회색 바 색상 설정
 
-    # 윈도우 크기 설정
+    # -------------------------------- GUI 초기화 --------------------------------
+    root = tk.Tk()
+    root.title("토익 시험 일정")
     root.geometry("700x550")
+    root.configure(background="#FFFFFF")  
 
-    # 회색 바 스타일 설정
-    style.configure('TFrame', background='#838383')  # 스타일에 색상을 지정합니다.
+    style = ttk.Style()
+    style.theme_use('clam')
 
-    # 회색 바 프레임
+    # -------------------------------- 회색 바 설정 --------------------------------
+    style.configure('TFrame', background='#838383')
     title_bar_frame = ttk.Frame(root, style='TFrame', height=30)
     title_bar_frame.pack(fill='x')
-    title_bar_frame.pack(pady=10)
 
-    # 회색바 꾸미기: 톱니바퀴 이미지 넣기
-    gear_icon = tk.PhotoImage(file="resource/gear_icon.png").subsample(10)
+    gear_icon = ImageTk.PhotoImage(Image.open(gear_icon_path).resize((30, 30)))
+    menu_icon = ImageTk.PhotoImage(Image.open(menu_icon_path).resize((30, 30)))
 
-    gear_button = tk.Label(title_bar_frame, image=gear_icon, relief="flat", bd=0)
-    gear_button.image = gear_icon  # 이미지가 garbage-collected 되는 것을 방지
-    gear_button.pack(side="left", padx=5)
+    gear_button = tk.Button(title_bar_frame, image=gear_icon, borderwidth=0, bg="#838383", cursor="hand2")
+    gear_button.pack(side=tk.LEFT, padx=20)
 
-    # 회색바 꾸미기: "시험 점수 조회" 글씨 넣기
-    text_label = tk.Label(title_bar_frame, text="시험 점수 조회", font=("Helvetica", 15))
+    text_label = tk.Label(title_bar_frame, text="토익 고사장 안내", font=("Helvetica", 15, "bold"), background="#838383")
     text_label.pack(side="left", padx=5)
 
-    # 회색바 꾸미기: 사이드바 버튼 넣기
-    sidebar_icon = tk.PhotoImage(file="resource/sidebar_icon.png").subsample(10)
+    menu_button = tk.Button(title_bar_frame, image=menu_icon, borderwidth=0, bg="#838383", cursor="hand2")
+    menu_button.pack(side=tk.RIGHT, padx=20)
 
-    sidebar_button = tk.Button(title_bar_frame, image=sidebar_icon, relief="flat", bd=0, command=lambda:validate_sidebar(root))
-    sidebar_button.image = gear_icon  # 이미지가 garbage-collected 되는 것을 방지
-    sidebar_button.pack(side="right", padx=5)
+    # -------------------------------- 내용 --------------------------------
+    window_width = root.winfo_width()
 
-    # 메인 프레임 생성 및 배치
-    main_frame = tk.Frame(root, bg="white", height=550)
-    main_frame.pack(fill="both", expand=True)
+    ets_icon = ImageTk.PhotoImage(Image.open(ets_icon_path))
+    member_login_icon = ImageTk.PhotoImage(Image.open(member_login_icon_path))
+    non_member_login_icon = ImageTk.PhotoImage(Image.open(non_member_login_icon_path))
 
-    # 회색 프레임 생성 및 배치
-    gray_frame = tk.Frame(main_frame, bg="gray", width=600, height=200)
-    gray_frame.place(relx=0.5, rely=0.25, anchor="center")
+    ets_button = tk.Button(root, image=ets_icon, borderwidth=0, bg="#FFFFFF", command=open_link, cursor="hand2")
+    ets_button.pack(pady=(20,0))
 
+    ets_label = tk.Label(root, text="[ 고사장 조회 ]", font=("Helvetica", 15, "bold"), bg="#FFFFFF")
+    ets_label.pack(pady=(0,30))  
 
-    # 프레임 생성
-    id_frame = tk.Frame(gray_frame)
-    id_frame.pack(padx=10, pady=10)
+    member_login_button = tk.Button(root, image=member_login_icon, borderwidth=0, bg="#FFFFFF", command=open_member_login_link, cursor="hand2")
+    member_login_button.pack()
 
-    # 아이콘 이미지 로드
-    name_icon = tk.PhotoImage(file="resource/sidebar_icon.png").subsample(10)
+    member_login_label = tk.Label(root, text="[ 회원 정보 조회 (YBM) ]", font=("Helvetica", 15, "bold"), bg="#FFFFFF")
+    member_login_label.pack(pady=(0,30))
 
-    # 아이콘을 표시할 Label 위젯 생성
-    icon_label = tk.Label(id_frame, image=sidebar_icon)
-    icon_label.pack(side="left")
+    non_member_login_button = tk.Button(root, image=non_member_login_icon, borderwidth=0, bg="#FFFFFF", command=open_non_member_login_link, cursor="hand2")
+    non_member_login_button.pack()
 
-    # Entry 위젯 생성
-    id_entry = tk.Entry(id_frame)
-    id_entry.insert(0, "Username")
-    id_entry.pack(side="left")
-
-    # 비밀번호 입력 엔트리.
-    # 프레임 생성
-    pass_frame = tk.Frame(gray_frame)
-    pass_frame.pack(padx=10, pady=10)
-
-    # 아이콘 이미지 로드
-    password_icon = tk.PhotoImage(file="resource/sidebar_icon.png").subsample(10)
-
-    # 아이콘을 표시할 Label 위젯 생성
-    icon_label = tk.Label(pass_frame, image=password_icon)
-    icon_label.pack(side="left")
-
-    # Entry 위젯 생성
-    pass_entry = tk.Entry(pass_frame)
-    pass_entry.insert(0, "Password")
-    pass_entry.pack(side="left")
-
-
+    non_member_login_label = tk.Label(root, text="[ 비회원 정보 조회 (YBM) ]", font=("Helvetica", 15, "bold"), bg="#FFFFFF")
+    non_member_login_label.pack()
 
     root.mainloop()
+

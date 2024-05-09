@@ -84,18 +84,18 @@ def open_testPage_window(current_window):
     # 회색바 꾸미기: 톱니바퀴 이미지 넣기
     gear_icon = tk.PhotoImage(file="resource/gear_icon.png").subsample(10)
 
-    gear_button = tk.Label(title_bar_frame, image=gear_icon, relief="flat", bd=0)
+    gear_button = tk.Label(title_bar_frame, image=gear_icon, relief="flat", bd=0, bg="#838383", cursor="hand2")
     gear_button.image = gear_icon  # 이미지가 garbage-collected 되는 것을 방지
     gear_button.pack(side="left", padx=5)
 
     # 회색바 꾸미기: "토익단어" 글씨 넣기
-    text_label = tk.Label(title_bar_frame, text="토익단어", font=("Helvetica", 15))
+    text_label = tk.Label(title_bar_frame, text="토익단어", font=("Helvetica", 15), bg="#838383", cursor="hand2")
     text_label.pack(side="left", padx=5)
 
     # 회색바 꾸미기: 사이드바 버튼 넣기
     sidebar_icon = tk.PhotoImage(file="resource/sidebar_icon.png").subsample(10)
 
-    sidebar_button = tk.Button(title_bar_frame, image=sidebar_icon, relief="flat", bd=0, command=lambda:validate_sidebar(current_window))
+    sidebar_button = tk.Button(title_bar_frame, image=sidebar_icon, relief="flat", bd=0, command=lambda:validate_sidebar(current_window), bg="#838383", cursor="hand2")
     sidebar_button.image = gear_icon  # 이미지가 garbage-collected 되는 것을 방지
     sidebar_button.pack(side="right", padx=5)
 
