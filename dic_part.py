@@ -25,47 +25,60 @@ def validate_sidebar(current_window):
     current_window.destroy()
 
 # 단어장에서 초록 박스를 버튼으로 여는 함수
-def open_green_box(parent_frame,white_box,dic_button,text):
-
+def open_green_box(parent_frame,white_box,green_box,dic_button,dictionary_box,text):
+    dictionary_box.pack(side="left", fill="both", expand=True)
+    green_box.pack(side="bottom",fill="x")
     dic_button_image = tk.PhotoImage(file="assets/frame0/button_6.png").subsample(2,2)
     dic_button.config(
-        command=lambda:close_green_box(parent_frame,white_box,dic_button,dictionary_box,text),
+        command=lambda:close_green_box(parent_frame,white_box,green_box,dic_button,dictionary_box,text),
         image=dic_button_image
     )
     dic_button.image = dic_button_image
     dic_button.pack(side="bottom",anchor="se")
 
-    dictionary_box = tk.Text(white_box, height=12, padx=20, pady=20,bg="lightgreen",borderwidth=0)
-    dictionary_box.insert("end", text)
-    dictionary_box.config(state="disabled")
-    dictionary_box.pack(side="left", fill="both", expand=True)
+
+
 
 # 단어장에서 초록 박스를 버튼으로 닫는 함수
-def close_green_box(parent_frame,white_box,dic_button,dictionary_box,text):
-    dictionary_box.pack_forget()
+def close_green_box(parent_frame,white_box,green_box,dic_button,dictionary_box,text):
     dic_button_image = tk.PhotoImage(file="assets/frame0/button_5.png").subsample(2,2)
     dic_button.config(
-        command=lambda:open_green_box(parent_frame,white_box,dic_button,text),
+        command=lambda:open_green_box(parent_frame,white_box,green_box,dic_button,dictionary_box,text),
         image=dic_button_image
     )
     dic_button.image = dic_button_image
+    green_box.pack_forget()
+    dictionary_box.pack_forget()
 
 def create_scrollable_text(parent_frame, text): # text에는 박스에 있는 영어 단어가 옴
     # 흰색 박스 생성
     white_box = tk.Frame(parent_frame, bg="white",borderwidth=2, relief="ridge")
-    white_box.pack(pady=10, fill="x")
+    white_box.pack(pady=10,fill="x")
+
+    green_box = tk.Frame(white_box, bg="white",borderwidth=0, relief="ridge")
+    green_box.pack(side="bottom",fill="x")
+    # 단어 상자 생성
+    dictionary_box = tk.Text(green_box, height=12,bg="lightgreen",borderwidth=0)
+    dictionary_box.insert("end", text)
+
 
     # 뜻 여는 버튼 생성
     dic_button_image = tk.PhotoImage(file="assets/frame0/button_5.png").subsample(2,2)
-    dic_button = tk.Button(white_box,image = dic_button_image,relief="flat",command=lambda:open_green_box(parent_frame,white_box,dic_button,text),bd=0)
+    dic_button = tk.Button(white_box,image = dic_button_image,relief="flat",command=lambda:open_green_box(parent_frame,white_box,green_box,dic_button,dictionary_box,text),bd=0)
     dic_button.image = dic_button_image
     dic_button.pack(side="bottom",anchor="se")
 
+    # 즐겨찾기 버튼 생성
+    favorites_button_image = tk.PhotoImage(file="resource/favorites_icon.png").subsample(15)
+    favorites_button = tk.Button(white_box,image = favorites_button_image,relief="flat",command=lambda:print(text),bd=0) # 나중에 오답노트로 저장하는 모듈로 바꿔주기
+    favorites_button.image = favorites_button_image
+    favorites_button.pack(side="top",anchor = "ne")
+
     # 음성 버튼 생성
     sound_button_image = tk.PhotoImage(file="resource/sound_icon.png").subsample(15)
-    sound_button = tk.Button(white_box,image = sound_button_image, relief="flat",command=lambda:print(text),bd=0) # 나중에 음성 모듈로 바꿔주기
+    sound_button = tk.Button(white_box,image = sound_button_image, relief="flat",command=lambda:print(text)) # 나중에 음성 모듈로 바꿔주기
     sound_button.image = sound_button_image
-    sound_button.pack(side="top",anchor = "ne")
+    sound_button.pack(side="right")
 
     # 스크롤 가능한 텍스트 박스 생성
     text_box = tk.Text(white_box, fg="black", wrap="word", height=4, padx=20, pady=20,borderwidth=0)
@@ -82,9 +95,6 @@ def open_dic_part_window(current_window,part): #part는 part1,part2,...,part6을
     # 스타일 설정
     style = ttk.Style()
     style.theme_use('clam')  # 스타일 테마 선택 (Tkinter의 기본 테마 중 하나)
-
-    # 회색 바 스타일 설정
-    style.configure('TFrame', background='#d9d9d9')  # 회색 바 색상 설정
 
     # 윈도우 크기 설정
     # root.geometry("700x550")

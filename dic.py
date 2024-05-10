@@ -95,17 +95,17 @@ def frame_down(current_window,**buttons):
 
     # button_1 => part 4 버튼
     buttons_list[0].config(
-        command=lambda:print("part4"),
+        command=lambda:open_dic_part_window(current_window,"part 4"),
         image=button_image_7
     )
     # button_2 => part 5 버튼
     buttons_list[1].config(
-        command=lambda:print("part5"),
+        command=lambda:open_dic_part_window(current_window,"part 5"),
         image=button_image_8
     )
     # button_3 => part 6 버튼
     buttons_list[2].config(
-        command=lambda:print("part6"),
+        command=lambda:open_dic_part_window(current_window,"part 6"),
         image=button_image_9
     )
 #=========================================================
@@ -131,11 +131,7 @@ def open_dic_window(current_window):
     style.theme_use('clam')  # 스타일 테마 선택 (Tkinter의 기본 테마 중 하나)
 
     # 회색 바 스타일 설정
-    style.configure('TFrame', background='#d9d9d9')  # 회색 바 색상 설정
-
-    # 회색 바 스타일 설정
     style.configure('TFrame', background='#838383')  # 스타일에 색상을 지정합니다.
-
 
     # 회색 바 프레임
     title_bar_frame = ttk.Frame(current_window, style='TFrame', height=30)
