@@ -1,18 +1,7 @@
-import os
-import pandas as pd
 import mysql.connector
-from dotenv import load_dotenv
+from db_connection import connect_to_database
 
-# .env 파일에서 환경 변수 로드
-load_dotenv()
-
-# MySQL 연결 설정
-mydb = mysql.connector.connect(
-  host=os.getenv("DB_HOST"),
-  user=os.getenv("DB_USER"),
-  password=os.getenv("DB_PASSWORD"),
-  database=os.getenv("DB_TABLE")
-)
+mydb = connect_to_database()
 
 def read_all_words():
     try:
@@ -38,6 +27,8 @@ def read_all_words():
     finally:
         # 연결 종료
         cursor.close()
+def main():
+    read_all_words()
 
-# 모든 단어 불러오기
-read_all_words()
+if __name__ == "__main__":
+    main()
