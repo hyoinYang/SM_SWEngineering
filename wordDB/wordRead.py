@@ -1,7 +1,19 @@
 import mysql.connector
-from db_connection import connect_to_database
+import os
+import mysql.connector
+from dotenv import load_dotenv
 
-mydb = connect_to_database()
+load_dotenv()
+
+# MySQL 연결 설정
+mydb = mysql.connector.connect(
+    host=os.getenv("DB_HOST"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    database=os.getenv("DB_NAME"),
+)
+
+
 
 def read_all_words():
     try:
