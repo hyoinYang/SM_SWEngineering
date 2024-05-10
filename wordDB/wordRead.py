@@ -16,10 +16,12 @@ def read_all_words():
         if len(words) == 0:
             print("데이터베이스에 단어가 없습니다.")
         else:
-            for word in words:
-                print("단어:", word[0])  # 단어 출력
-                print("의미:", word[1])  # 의미 출력
-                print("")
+            print(words)
+            return words
+            # for word in words:
+                # print("단어:", word[0])  # 단어 출력
+                # print("의미:", word[1])  # 의미 출력
+                # print("")
 
     except mysql.connector.Error as err:
         print("MySQL 오류:", err)
