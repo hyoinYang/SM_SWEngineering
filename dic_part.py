@@ -42,6 +42,7 @@ def close_green_box(white_box,green_box,dictionary_box,dic_button,text):
     dictionary_box.pack_forget()
     green_box.config(height=1)
 
+# 단어장에서 랜덤 버튼 클릭
 def random_button_click(sequence_button,dic_list):
     random.shuffle(random_index)
     for new_text,new_sentence,i in zip(word_texts,sentence_texts,random_index):
@@ -54,6 +55,7 @@ def random_button_click(sequence_button,dic_list):
 
     sequence_button.config(text="순행",command=lambda:sequence_button_click(sequence_button,dic_list))
 
+# 단어장에서 순행 버튼 클릭
 def sequence_button_click(sequence_button,dic_list):
     index = list(range(0,10))
     for new_text,new_sentence,i in zip(word_texts,sentence_texts,index):
