@@ -1,9 +1,28 @@
 import mysql.connector
 from db_connection import connect_to_database
 from wordExist import check_word_exist
+from makeSen import make_sentence,translate_to_korean
 
 # MySQL 연결
 mydb = connect_to_database()
+def define_part():
+    cursor = mydb.cursor()
+    query1 = "SELECT part FROM words ORDER BY id DESC LIMIT 1"
+    cursor.execute(query1)
+    part = cursor.fetchone()[0]
+    query2 = "SELECT count(*) FROM words WHERE part = %s"
+    cursor.execute(query2,(part,))
+    count = cursor.fetchone()[0]
+    if (count <30):
+        return part
+    else:
+        return part+1
+def define_id():
+    cursor = mydb.cursor()
+    query1 = "SELECT id FROM words ORDER BY id DESC LIMIT 1"
+    cursor.execute(query1)
+    id = cursor.fetchone()[0]
+    return id+1
 
 def add_word():
     # 단어와 의미 입력 받기
@@ -17,8 +36,12 @@ def add_word():
     try:
         # MySQL 쿼리 실행
         cursor = mydb.cursor()
-        sql = "INSERT INTO words (eng_word, kor_word) VALUES (%s, %s)"
-        val = (word, meaning)
+        example_sentence = make_sentence(word)
+        kor_example_sentence =translate_to_korean(example_sentence)
+        part = define_part()
+        id = define_id()
+        sql = "INSERT INTO words (eng_word, kor_word, example_sentence, kor_example_sentence, part, id) VALUES (%s, %s, %s, %s, %s, %s)"
+        val = (word, meaning, example_sentence, kor_example_sentence, part, id)
         cursor.execute(sql, val)
 
         # 변경사항을 커밋
