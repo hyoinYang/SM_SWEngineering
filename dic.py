@@ -1,15 +1,9 @@
-"""
-1. 단어 조회에 체크 표시
-2. 단어 개수에 따라 part 정해지도록
-3. assets 파일 지우고 resource에 옮기기
-"""
 # from tkinter import *
 # Explicit imports to satisfy Flake8
-from tkinter import Canvas, Button, PhotoImage
 from sidebar import open_sidebar_window
 from dic_part import open_dic_part_window
 from tkinter import ttk
-from tkinter.ttk import Progressbar, Label, Style
+from tkinter.ttk import Progressbar, Label
 import tkinter as tk
 
 word_cnt = 90 # 나중에 데이터베이스에 있는 단어 개수로 바꿔주기, 단어 개수에 따라 part가 많이 생김

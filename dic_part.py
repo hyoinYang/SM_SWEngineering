@@ -1,14 +1,11 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk
 import random
 """
 1. 단어 조회에 체크 표시
 2. 단어 개수에 따라 part 정해지도록
 3. assets 파일 지우고 resource에 옮기기
 """
-from pathlib import Path
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
-
 word_texts = [] # 프레임에 들어가는 텍스트 클래스( 단어 )
 sentence_texts = [] # 초록색 프레임에 들어가는 텍스트 클래스 ( 예문 )
 wrong_word_texts = [] # 오답노트에 들어가는 텍스트 문자( 단어 )
@@ -24,7 +21,7 @@ def validate_sidebar(current_window):
 # 단어장에서 초록 박스를 버튼으로 여는 함수
 def open_green_box(white_box,green_box,dictionary_box,dic_button,text):
     dictionary_box.pack(fill="both", expand=True)
-    dic_button_image = tk.PhotoImage(file="assets/frame0/button_6.png").subsample(2,2)
+    dic_button_image = tk.PhotoImage(file="resource/button_6.png").subsample(2,2)
     dic_button.config(
         command=lambda:close_green_box(white_box,green_box,dictionary_box,dic_button,text),
         image=dic_button_image
@@ -33,7 +30,7 @@ def open_green_box(white_box,green_box,dictionary_box,dic_button,text):
     
 # 단어장에서 초록 박스를 버튼으로 닫는 함수
 def close_green_box(white_box,green_box,dictionary_box,dic_button,text):
-    dic_button_image = tk.PhotoImage(file="assets/frame0/button_5.png").subsample(2,2)
+    dic_button_image = tk.PhotoImage(file="resource/button_5.png").subsample(2,2)
     dic_button.config(
         command=lambda:open_green_box(white_box,green_box,dictionary_box,dic_button,text),
         image=dic_button_image
@@ -123,7 +120,7 @@ def create_scrollable_text(parent_frame, text,word_index): # text에는 박스�
     sound_button.pack(anchor="e",pady = 0)
 
     # 뜻 여는 버튼 생성
-    dic_button_image = tk.PhotoImage(file="assets/frame0/button_5.png").subsample(2,2)
+    dic_button_image = tk.PhotoImage(file="resource/button_5.png").subsample(2,2)
     dic_button = tk.Button(white_box,image = dic_button_image,relief="flat",command=lambda:open_green_box(white_box,green_box,dictionary_box,dic_button,text))
     dic_button.image = dic_button_image
     dic_button.pack(side="right",anchor="s")
