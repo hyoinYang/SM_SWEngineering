@@ -29,5 +29,6 @@ for part_index in range(0,int(word_cnt/10)):
     part = PartView(root,title.frame,part_index,learned_word_list[part_index])
     part.init_part()
 
+# 
 root.mainloop()
 
