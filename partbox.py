@@ -40,6 +40,8 @@ class PartView: # part_index는 part 몇 인지, learend_word_list는 각 part�
 
 # 전체 단어 개수, 각 파트에서 배운 단어 개수 db 
 class PartModel:
-    def __init__(self,word_cnt,learned_word_list): #word_cnt는 단어장에 표현할 총 단어 개수, learned_word_list는 각 파트에서 배운 단어 개수
-        self.word_cnt = word_cnt
+    def __init__(self,dictionary,learned_word_list): #word_cnt는 단어장에 표현할 총 단어 개수, learned_word_list는 각 파트에서 배운 단어 개수
         self.learned_word_list = learned_word_list
+        self.dictionary = dictionary
+        self.word_cnt = len(self.dictionary)
+        
