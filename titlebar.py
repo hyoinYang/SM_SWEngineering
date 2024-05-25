@@ -1,5 +1,3 @@
-from sidebar import open_sidebar_window
-from dic_part import open_dic_part_window
 from tkinter import ttk
 import tkinter as tk
 
@@ -27,6 +25,7 @@ class TitleView:
     def setting_title_bar(self):
         self.title_bar_frame.pack(fill='x')
         self.title_bar_frame.pack(pady=10)
+        
     # gear_icon ( 톱니바퀴 ) 설정
     def setting_gear_icon(self):
         self.gear_button.image = self.gear_icon_image

@@ -1,13 +1,12 @@
 from titlebar import TitleView
 from partbox import PartModel
 from partbox import PartView
-#from part_dict import PartDictModel
-from part_dict import PartDictView
+from part_dict import PartDictModel
 
 import tkinter as tk
+import math
 
 root = tk.Tk() # 윈도우 생성
-
 #화면 크키 조정
 my_windows_width = root.winfo_screenwidth()
 my_windows_height = root.winfo_screenheight()
@@ -22,23 +21,30 @@ dictionary = ["apple","banana","chief","depend","eagle","fantastic","golf","high
 "impressive","reduce","beware","innate","restor","necessary","health","renovate","arise","certain",
 "policy","circumscribe","prohibit","prohibition","budget","preserve","calcuate","assent","exhibit","safety",
 "refuse","expend","require","contribute","competent","insurance","frquently","mandatory","retire","abuse",
+"instruct","amend","garner","monetary","financial"
 ] # 나중에 db에 있는 단어장 dictionary에 넣기
-word_cnt = len(dictionary) # 단어 총 개수 -> 나중에 1200(?)로 수정
-learned_word_list=list(range(0,word_cnt//10)) # range(0,파트 개수) -> list에는 각 part에서의 배운 단어 개수가 들어간다.
+
+word_cnt = len(dictionary) # 단어 총 개수
+learned_word_list=list(range(0,math.ceil(word_cnt/10))) # range(0,파트 개수) -> list에는 각 part에서의 배운 단어 개수가 들어간다. 나중에 //120으로 수정
 sentence = dictionary # 나중에 db에 있는 예문 넣기 ! , 임시로 sentence = dictionary로 했음
+wrong_word_texts = [] # 오답노트에 들어가는 텍스트 문자( 단어 )
+learned_word_texts = [] # 배운 단어 리스트 ( 파트별로 구현할 필요 x )
 
 # 타이틀바 생성
 title = TitleView(root)
 title.init_title()
 
-# 단어장 db 생성 -> 단어장, 단어 개수, 파트 별 배운 단어 개수
-#dictionary_db = PartModel(dictionary,learned_word_list)
+# 단어장 db 생성 
+dictionary_db = PartModel(dictionary,sentence,learned_word_list,wrong_word_texts,learned_word_texts) # 단어리스트, 예문 리스트, 배운 단어 개수, 오답노트, 배운 단어 리스트(이미 배운 단어를 가리기 위해)
 
 # 단어장 GUI 생성
-for part_index in range(0,int(word_cnt/10)): # 각 파트에 단어 10개만 있다고 가정. 나중에 120개로 수정
-    partbox = PartView(root,title.frame,part_index,learned_word_list[part_index])
+for part_index in range(0,math.ceil(dictionary_db.word_cnt/10)): # 각 파트에 단어 10개만 있다고 가정. 나중에 /120으로 수정
+    if part_index == int(dictionary_db.word_cnt/10): # 마지막 케이스 일 때, 나중에 /120으로 수정 -> 마지막 케이스는 단어 개수가 딱 120개가 아니기 때문
+        part_dict_model = PartDictModel(part_index,dictionary_db,dictionary_db.word_cnt % 10) # 한 파트의 모델나중에 10 -> 120으로 수정
+    else:
+        part_dict_model = PartDictModel(part_index,dictionary_db,10) # 한 파트의 모델, 나중에 10 -> 120으로 수정
+
+    partbox = PartView(root,title.frame,part_dict_model,dictionary_db) # part 1 ~ part n 까지 gui로 구현하기 위한 view 클래스
     partbox.init_part()
-    for i in range(part_index*10,part_index*10+10):
-        partdict = PartDictView(root,dictionary[i],sentence[i])
-        partdict.init_part_dict()
+
 root.mainloop()
