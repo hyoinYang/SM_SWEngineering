@@ -3,12 +3,18 @@ from tkinter import ttk, messagebox
 
 # ----------------------------- Model -----------------------------
 class TestModel:
-    def __init__(self):
-        self.question_num = 10  # 테스트 문제 개수
+    question_num = 30
+    
+    # 임의로 3개만 만들어 뒀습니다.
+    combo_values = ["PART 1", "PART 2", "PART 3"]
 
-    def get_question_text(self, question_num):
-        # 테스트 문제 번호에 따른 텍스트 반환
-        return f"텍스트 내용입니다. {question_num+1}번째 박스입니다."
+    # 문제들을 담는 배열입니다.
+    questions = ["t","e","s","t","1","2","3","4","5","6", "t","e","s","t","1","2","3","4","5","6", "t","e","s","t","1","2","3","4","5","6"]
+    
+    def __init__(self, root):
+        self.root = root
+
+    
 
 # ----------------------------- View -----------------------------
 class TestView:
@@ -51,6 +57,11 @@ class TestView:
         sidebar_button.image = gear_icon  # 이미지가 garbage-collected 되는 것을 방지
         sidebar_button.pack(side="right", padx=5)
 
+        # 콤보박스 생성
+        part_combo_box = ttk.Combobox(self.root, values=TestModel.combo_values)
+        part_combo_box.pack(padx=5)
+        part_combo_box.bind("<<ComboboxSelected>>", TestController.select_part)
+
         # Canvas 생성
         canvas = tk.Canvas(self.root)
         canvas.pack(side="left", fill="both", expand=True)
@@ -69,13 +80,12 @@ class TestView:
         # 내부 프레임의 사이즈 변경 시 Canvas 업데이트
         frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
 
-
-
-        # 문제 개수에 맞는 초록색 박스 생성
-        question_num = 10
-        for i in range(question_num):
-            text = f"텍스트 내용입니다. {i+1}번째 박스입니다."
+        idx = 0
+        # 문제 개수와 문제에 맞는 박스(초록색) 생성
+        for i in range(TestModel.question_num):
+            text = TestModel.questions[idx]
             TestView.create_scrollable_text(frame, i, text)
+            idx=idx+1
 
         # 윈도우 실행
         self.root.mainloop
@@ -124,6 +134,18 @@ class TestController:
 
     def open_testPage_window(self):
         self.view.open_testPage_window()
+
+    # 콤보박스 선택에 맞춰서 문제들을 셋팅하는 함수입니다.
+    # 세팅방법은 임의로 정했습니다. 원래라면 데이터베이스에서 찾아와야 합니다.
+    # 데이터베이스에 연결시: Model 내 questions를 수정해야 합니다. (questions를 Model 내에서 그대로 출력합니다.)
+    def select_part(event):
+        part = event.widget.get()
+        if (part == "PART 1"):
+            selected_questions=TestModel.questions[0]
+        
+    
+
+    
 
 if __name__ == "__main__":
     root = tk.Tk()
