@@ -3,12 +3,12 @@ import os
 import pandas as pd
 import time
 from dotenv import load_dotenv
-from db_connection import connect_to_database
+from wordDB.db_connection import connect_to_database
+
+load_dotenv()
 
 # MySQL 연결
 mydb = connect_to_database()
-load_dotenv()
-
 openai.api_key = os.getenv("api_key")
 
 def get_completion(prompt, model="gpt-3.5-turbo"):
