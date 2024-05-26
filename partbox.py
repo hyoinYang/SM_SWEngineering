@@ -13,7 +13,7 @@ class PartView: # part_index는 part 몇 인지, learend_word_list는 각 part�
         self.part_button = tk.Button(self.white_box,relief="flat",text=f"PART {part_dict_model.part_index+1}",width=11,height=2,font="Helvetica",
         command=lambda:part_controller.part_event()) #part controller에 한 파트의 단어,예문 넣었음
         self.learned_word = dictionary_db.learned_word_list[part_dict_model.part_index] # 특정 파트의 배운 단어
-        self.progress_label = Label(self.white_box, text=f"학습률: {self.learned_word} / 120 [ {self.learned_word//120*100}% ]",background="white",font="Helvetica") # 학습률 출력
+        self.progress_label = Label(self.white_box, text=f"학습률: {self.learned_word} / 30 [ {self.learned_word//30*100}% ]",background="white",font="Helvetica") # 학습률 출력
         self.progress_bar = Progressbar(self.white_box, orient="horizontal", mode="determinate",length=300) # 학습률에 따른 게이지바
 
     # white_box는 part, 진행률, 학습률이 들어갈 box
