@@ -20,7 +20,7 @@ def open_non_member_login_link():
 ets_icon_path = "dictionary/assets/frame2/exam_place_seyeon_image/ets.png"
 member_login_icon_path = "dictionary/assets/frame2/exam_place_seyeon_image/member_login_icon.png"
 non_member_login_icon_path = "dictionary/assets/frame2/exam_place_seyeon_image/non_member_login_icon.png"
-gear_icon_path = "dictionary/assets/frame2/title_bar_frame_image.png"
+gear_icon_path = "dictionary/assets/frame2/title_bar_frame_image/gear_icon.png"
 menu_icon_path = "dictionary/assets/frame2/title_bar_frame_image/sidebar_icon.png"
 
 # -------------------------------- GUI 초기화 --------------------------------
@@ -46,8 +46,42 @@ gear_button.pack(side=tk.LEFT, padx=20)
 text_label = tk.Label(title_bar_frame, text="토익 고사장 안내", font=("Helvetica", 15, "bold"), background="#838383")
 text_label.pack(side="left", padx=5)
 
-menu_button = tk.Button(title_bar_frame, image=menu_icon, borderwidth=0, bg="#838383", cursor="hand2")
-menu_button.pack(side=tk.RIGHT, padx=20)
+#-----------사이드바-----------------------------------------------------
+def show_menu(event):
+    x = root.winfo_x() + title_bar_frame.winfo_width() -355  # 메뉴가 표시될 x 좌표
+    y = root.winfo_y() + title_bar_frame.winfo_height() + 30    # 메뉴가 표시될 y 좌표
+    menu.post(x, y)
+
+
+menu_button = tk.Button(title_bar_frame, image=menu_icon, cursor="hand2")
+menu = tk.Menu(menu_button, tearoff=0)
+menu.add_command(label="                   단어장                 ", font=("Helvetica", 15,"bold"))
+
+menu.add_separator()
+menu.add_command(label="                 단어 테스트               ", font=("Helvetica", 15,"bold"))
+
+menu.add_separator()
+menu.add_command(label="                  오답노트                 ", font=("Helvetica", 15,"bold"))
+
+menu.add_separator()
+menu.add_command(label="               토익 시험 날짜               ", font=("Helvetica", 15,"bold"))
+
+menu.add_separator()
+menu.add_command(label="              토익 고사장 안내              ", font=("Helvetica", 15,"bold"))
+
+menu.add_separator()
+menu.add_command(label="               시험 점수 조회               ", font=("Helvetica", 15,"bold"))
+menu.add_separator()
+
+for _ in range(9):
+    menu.add_command(label=" ", font=("Helvetica", 15, "bold"))
+
+menu.add_separator()
+menu.add_command(label="                  로그아웃                  ", font=("Helvetica", 15,"bold"))
+
+menu_button["command"] = lambda event=None: show_menu(event)
+menu_button.pack(side=tk.RIGHT, padx=0)
+
 
 # -------------------------------- 내용 --------------------------------
 window_width = root.winfo_width()
