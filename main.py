@@ -2,6 +2,7 @@ from titlebar import TitleView
 from partbox import PartModel
 from partbox import PartView
 from part_dict import PartDictModel
+from speak_word import SpeakWord
 
 import tkinter as tk
 import math
@@ -37,6 +38,9 @@ title.init_title()
 # 단어장 db 생성 
 dictionary_db = PartModel(dictionary,sentence,learned_word_list,wrong_word_texts,learned_word_texts) # 단어리스트, 예문 리스트, 배운 단어 개수, 오답노트, 배운 단어 리스트(이미 배운 단어를 가리기 위해)
 
+# 단어 발음 구현 클래스 생성
+speak_word_model = SpeakWord()
+
 # 단어장 GUI 생성
 for part_index in range(0,math.ceil(dictionary_db.word_cnt/10)): # 각 파트에 단어 10개만 있다고 가정. 나중에 /120으로 수정
     if part_index == int(dictionary_db.word_cnt/10): # 마지막 케이스 일 때, 나중에 /120으로 수정 -> 마지막 케이스는 단어 개수가 딱 120개가 아니기 때문
@@ -44,7 +48,7 @@ for part_index in range(0,math.ceil(dictionary_db.word_cnt/10)): # 각 파트에
     else:
         part_dict_model = PartDictModel(part_index,dictionary_db,10) # 한 파트의 모델, 나중에 10 -> 120으로 수정
 
-    partbox = PartView(root,title.frame,part_dict_model,dictionary_db) # part 1 ~ part n 까지 gui로 구현하기 위한 view 클래스
+    partbox = PartView(root,title.frame,part_dict_model,speak_word_model,dictionary_db) # part 1 ~ part n 까지 gui로 구현하기 위한 view 클래스
     partbox.init_part()
 
 root.mainloop()

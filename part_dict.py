@@ -1,6 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
-from titlebar import TitleView
+from speak_word import SpeakWord
 import random
 
 # 한 파트 단어의 db
@@ -104,11 +103,12 @@ class PartDictView:
     def setting_random_button(self):
         self.random_button.pack(side="top",anchor="center")
 
-# partbox.py에서 part 눌렀을 때 이벤트 처리
-class PartDictController:
-    def __init__(self,root,model):
+# partbox.py에서 part 눌렀을 때 이벤트 처리, 
+class PartDictController: 
+    def __init__(self,root,model,speak_model):
         self.root = root
         self.model = model # partdictmodel이 있어야 함 -> 각 파트마다 존재, 각 파트에 필요한 데이터 들어있음
+        self.speak_model = speak_model
 
     def part_event(self): # word, sentence가 이 파트에서 출력할 단어, 예문 리스트
         for widget in self.root.winfo_children():
@@ -172,7 +172,7 @@ class PartDictController:
         sound_button.config(bg="red")
         sound_button.after(1000,lambda:sound_button.config(bg="SystemButtonFace"))
         word = self.model.word_texts[i].get("1.0",tk.END).replace("\n","")
-        print(word)
+        self.speak_model.init_speak(word)
 
     # 즐겨찾기 버튼 
     def favorites_button_click(self,favorites_button,word_index):
