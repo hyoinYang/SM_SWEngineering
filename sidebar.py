@@ -2,9 +2,11 @@ import tkinter as tk
 
 root = tk.Tk()
 root.geometry('700x550')
-root.title('a')
+root.title('Admin')
 root.configure(background="#FFFFFF")
 
+# 사용자가 관리자인지 여부를 저장하는 변수
+is_admin = True
 
 def toggle_menu():
 
@@ -57,15 +59,21 @@ def toggle_menu():
     canvas6.pack()
     canvas6.create_line(0, 0, 300, 0, fill='gray')
 
-    #여기 공백이 들어가거나 canvas7, toggle_btn7의 위치 기준점을 아래서부터 잡아야함 (쉽지않네...) pack 내부 side를 수정하는건 맞는거 같은데 bottom으로 작성하니 아예 화면 밖으로 나가는듯함.
+    toggle_btn7 = tk.Button(toggle_menu_fm, text='로그아웃', font=('Helvetica', 15, 'bold'), bd=0, bg='#838383', fg='black', activebackground='#838383', activeforeground='black', cursor='hand2')
+    toggle_btn7.pack(anchor='center')
 
     canvas7 = tk.Canvas(toggle_menu_fm, width=300, height=2, highlightthickness=0, bg='black')
     canvas7.pack()
     canvas7.create_line(0, 0, 300, 0, fill='gray')
 
-    toggle_btn7 = tk.Button(toggle_menu_fm, text='로그아웃', font=('Helvetica', 15, 'bold'), bd=0, bg='#838383', fg='black', activebackground='#838383', activeforeground='black', cursor='hand2')
-    toggle_btn7.pack(anchor='center')
+    # 관리자 전용 기능을 추가합니다. 사용자가 관리자일 경우에만 보입니다.
+    if is_admin:
+        canvas7 = tk.Canvas(toggle_menu_fm, width=300, height=2, highlightthickness=0, bg='black')
+        canvas7.pack()
+        canvas7.create_line(0, 0, 300, 0, fill='gray')
 
+        toggle_btn7 = tk.Button(toggle_menu_fm, text='관리자 전용 기능', font=('Helvetica', 15, 'bold'), bd=0, bg='#838383', fg='black', activebackground='#838383', activeforeground='black', cursor='hand2')
+        toggle_btn7.pack(anchor='center')
 
 
     window_height= 700
