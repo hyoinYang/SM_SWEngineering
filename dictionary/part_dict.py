@@ -4,13 +4,13 @@ import random
 
 # 한 파트 단어의 db
 class PartDictModel:
-    def __init__(self,part_index,dictionary_db,cnt):
-        self.random_index=list(range(0,30)) # 랜덤 함수에서 사용, 임시로 단어 10개라고 설정했기 때문에 range(0,10)으로 설정함 
+    def __init__(self,part_index,dictionary_db,cnt): 
         self.word_texts = [] # 흰색 프레임에 들어가는 텍스트 클래스
         self.sentence_texts = [] # 초록색 프레임에 들어가는 텍스트 클래스 ( 예문 )
         self.part_index = part_index # 파트 몇 인지
-        self.word = dictionary_db.dictionary[part_index*10:part_index*10+cnt] # 이 파트에 들어가는 단어 , 
-        self.sentence = dictionary_db.sentence[part_index*10:part_index*10+cnt] # 이 파트에 들어가는 예문, 
+        self.word = dictionary_db.dictionary[part_index*30:part_index*30+cnt] # 이 파트에 들어가는 단어 
+        self.sentence = dictionary_db.sentence[part_index*30:part_index*30+cnt] # 이 파트에 들어가는 예문
+        self.random_index=list(range(0,len(self.word))) # 랜덤 함수에서 사용
         self.dictionary_db = dictionary_db # 전체 단어장 db
         
 # gui 구현
@@ -151,8 +151,7 @@ class PartDictController:
             new_sentence.delete("1.0",tk.END)
             new_text.insert(tk.END,word[self.model.random_index[i]])
             new_sentence.insert(tk.END,sentence[self.model.random_index[i]])
-
-        sequence_button.config(text="순행",command=lambda:self.sequence_button_click(sequence_button,word,sentence))
+            sequence_button.config(text="순행",command=lambda:self.sequence_button_click(sequence_button,word,sentence))
 
     # 단어장에서 순행 버튼 클릭
     def sequence_button_click(self,sequence_button,word,sentence):
