@@ -9,8 +9,8 @@ class PartDictModel:
         self.word_texts = [] # 흰색 프레임에 들어가는 텍스트 클래스
         self.sentence_texts = [] # 초록색 프레임에 들어가는 텍스트 클래스 ( 예문 )
         self.part_index = part_index # 파트 몇 인지
-        self.word = dictionary_db.dictionary[part_index*10:part_index*10+cnt] # 이 파트에 들어가는 단어 , 
-        self.sentence = dictionary_db.sentence[part_index*10:part_index*10+cnt] # 이 파트에 들어가는 예문, 
+        self.word = dictionary_db.dictionary[part_index*30:part_index*30+cnt] # 이 파트에 들어가는 단어 , 
+        self.sentence = dictionary_db.sentence[part_index*30:part_index*30+cnt] # 이 파트에 들어가는 예문, 
         self.dictionary_db = dictionary_db # 전체 단어장 db
         
 # gui 구현

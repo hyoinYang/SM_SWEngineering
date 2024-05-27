@@ -41,13 +41,3 @@ class PartView: # part_index는 part 몇 인지, learend_word_list는 각 part�
         self.setting_part_button()
         self.setting_learned_word()
         self.setting_progress_bar()
-
-# 전체 단어 개수, 각 파트에서 배운 단어 개수 db 
-class PartModel:
-    def __init__(self,dictionary,sentence,learned_word_list,wrong_word_texts,learned_word_texts): #word_cnt는 단어장에 표현할 총 단어 개수, learned_word_list는 각 파트에서 배운 단어 개수
-        self.learned_word_list = learned_word_list # 학습률 계산을 위한 list
-        self.dictionary = dictionary # 모든 단어
-        self.word_cnt = len(self.dictionary) # 모든 단어 개수
-        self.sentence = sentence # 모든 예문
-        self.wrong_word_texts = wrong_word_texts # 오답노트 데이터 
-        self.learned_word_texts = learned_word_texts # 이미 배운 단어 데이터
