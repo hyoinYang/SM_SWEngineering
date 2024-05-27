@@ -1,17 +1,18 @@
 from tkinter import ttk
 import tkinter as tk
 
-# 상단 바 출력하는 view 
+# ----------------------------- View -----------------------------
 class TitleView:
-    def __init__(self,window):
+
+    def __init__(self,window, title_name):
         self.window = window
         self.style = ttk.Style()
         self.title_bar_frame = ttk.Frame(self.window, style='TFrame', height=30)
         self.gear_icon_image = tk.PhotoImage(file="resource/gear_icon.png").subsample(10)
-        self.gear_button = tk.Label(self.title_bar_frame, image=self.gear_icon_image, relief="flat", bd=0,bg='#838383') # command 추가하기
-        self.text_label = tk.Label(self.title_bar_frame, text="토익단어", font=("Helvetica", 15))
+        self.gear_button = tk.Label(self.title_bar_frame, image=self.gear_icon_image, relief="flat", bd=0, bg='#838383') # command 추가하기
+        self.text_label = tk.Label(self.title_bar_frame, text=title_name, font=("Helvetica", 15), bg='#838383')
         self.sidebar_image = tk.PhotoImage(file="resource/sidebar_icon.png").subsample(10)
-        self.sidebar_button = tk.Button(self.title_bar_frame, image=self.sidebar_image, relief="flat", bd=0,bg='#838383') # command 추가하기
+        self.sidebar_button = tk.Button(self.title_bar_frame, image=self.sidebar_image, relief="flat", bd=0, bg='#838383') # command 추가하기
         self.canvas = tk.Canvas(self.window)
         self.scrollbar = ttk.Scrollbar(window, orient="vertical", command=self.canvas.yview)
         self.frame = tk.Frame(self.canvas)
@@ -65,12 +66,15 @@ class TitleView:
         self.setting_scrollbar()
         self.setting_frame()
 
-"""# title바에 존재하는 톱니바퀴, 사이드바 클릭 시 이벤트 처리
+
+# ----------------------------- Controller -----------------------------
+# title바에 존재하는 톱니바퀴, 사이드바 클릭 시 이벤트 처리
 class TitleController:
+
     def __init__(self,gear_button,sidebar_button):
         self.gear_button = gear_button
         self.sidebar_button = sidebar_button
+
     
     def gear_button_click(self):
         self.gear
-"""
