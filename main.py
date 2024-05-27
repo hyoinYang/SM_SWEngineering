@@ -61,7 +61,7 @@ dictionary = ["apple","banana","chief","depend","eagle","fantastic","golf","high
 "instruct","amend","garner","monetary","financial"
 ] # 나중에 db에 있는 단어장 dictionary에 넣기
 word_cnt = len(dictionary) # 단어 총 개수
-learned_word_list=list(range(0,math.ceil(word_cnt/30))) # range(0,파트 개수) -> list에는 각 part에서의 배운 단어 개수가 들어간다. 
+learned_word_list=[0 for i in range(0,math.ceil(word_cnt/30))] # range(0,파트 개수) -> list에는 각 part에서의 배운 단어 개수가 들어간다. 
 sentence = dictionary # 나중에 db에 있는 예문 넣기 ! , 임시로 sentence = dictionary로 했음
 wrong_word_texts = [] # 오답노트에 들어가는 텍스트 문자( 단어 )
 learned_word_texts = [] # 배운 단어 리스트 ( 파트별로 구현할 필요 x )
