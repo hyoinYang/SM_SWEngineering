@@ -2,10 +2,6 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
 
-# 은희님!!!!!!!!!!!! 여기 데이터들어가니까 수정해주시면 됩니다!!!!!!!!!!!!!!!!!!!!!!!
-#exam_info 변수명 그대로 두고, 일정, 접수기간, 성적발표 틀 규격만 지켜 주시면 정상 작동 될 듯 합니다! 
-#혹시 문제 생기면 # 시험 정보 리스트 트리뷰에 추가 (구분선을 이용해 각 열 사이에 구분 추가) 이 부분이랑 교차 확인 부탁드립니다!
-
 exam_info = [
     {"일정": "2024년 4월 14일 (일) \n09:20",
      "접수기간": "2024년 2월 26일 (월) \n~ 2024년 4월 1일 (월)",
@@ -17,7 +13,6 @@ exam_info = [
      "접수기간": "2024년 4월 29일 (월) \n~ 2024년 6월 10일 (월)",
      "성적발표": "2024년 6월 25일 (화) \n09:20"},
 ]
-# 여기까지!!!!!!!!!!!!!!!!!!!!!!! ---------------------------------------------------------------------------------
 
 # 창 생성 및 초기 설정
 root = tk.Tk()
@@ -57,9 +52,41 @@ gear_button.pack(side=tk.LEFT, padx=20)
 text_label = tk.Label(title_bar_frame, text="토익 시험 일정", font=("Helvetica", 15, "bold"), background="#838383")
 text_label.pack(side="left", padx=5)
 
-# 메뉴 버튼 생성 및 배치 (회색 바 프레임 내)
-menu_button = tk.Button(title_bar_frame, image=menu_icon, borderwidth=0, bg="#838383", cursor="hand2")
-menu_button.pack(side=tk.RIGHT, padx=20)
+#-----------사이드바-----------------------------------------------------
+def show_menu(event):
+    x = root.winfo_x() + title_bar_frame.winfo_width() -355  # 메뉴가 표시될 x 좌표
+    y = root.winfo_y() + title_bar_frame.winfo_height() + 30    # 메뉴가 표시될 y 좌표
+    menu.post(x, y)
+
+
+menu_button = tk.Button(title_bar_frame, image=menu_icon, cursor="hand2")
+menu = tk.Menu(menu_button, tearoff=0)
+menu.add_command(label="                   단어장                 ", font=("Helvetica", 15,"bold"))
+
+menu.add_separator()
+menu.add_command(label="                 단어 테스트               ", font=("Helvetica", 15,"bold"))
+
+menu.add_separator()
+menu.add_command(label="                  오답노트                 ", font=("Helvetica", 15,"bold"))
+
+menu.add_separator()
+menu.add_command(label="               토익 시험 날짜               ", font=("Helvetica", 15,"bold"))
+
+menu.add_separator()
+menu.add_command(label="              토익 고사장 안내              ", font=("Helvetica", 15,"bold"))
+
+menu.add_separator()
+menu.add_command(label="               시험 점수 조회               ", font=("Helvetica", 15,"bold"))
+menu.add_separator()
+
+for _ in range(9):
+    menu.add_command(label=" ", font=("Helvetica", 15, "bold"))
+
+menu.add_separator()
+menu.add_command(label="                  로그아웃                  ", font=("Helvetica", 15,"bold"))
+
+menu_button["command"] = lambda event=None: show_menu(event)
+menu_button.pack(side=tk.RIGHT, padx=0)
 
 #--------------------안에 표 위젯 내용------------------------------------------------------------------------------------------
 # 트리뷰이 위젯 생성
