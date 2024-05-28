@@ -88,7 +88,7 @@ class DictionaryMainController:
             else:
                 part_dict_model = PartDictModel(part_index,self.dictionary_db,30) # 한 파트의 모델, 나중에 10 -> 120으로 수정
 
-            partbox = PartView(root,title.frame,part_dict_model,self.speak_word_model,self.dictionary_db) # part 1 ~ part n 까지 gui로 구현하기 위한 view 클래스
+            partbox = PartView(self.root,title.frame,part_dict_model,self.speak_word_model,self.dictionary_db) # part 1 ~ part n 까지 gui로 구현하기 위한 view 클래스
             partbox.init_part()
         self.root.mainloop()
 
@@ -108,7 +108,12 @@ sentence = dictionary # 나중에 db에 있는 예문 넣기 ! , 임시로 sente
 wrong_word_texts = [] # 오답노트에 들어가는 텍스트 문자( 단어 )
 learned_word_texts = [] # 배운 단어 리스트 ( 파트별로 구현할 필요 x )
 
-root = tk.Tk()
 partmodel = DictionaryModel(dictionary,sentence,learned_word_list,wrong_word_texts,learned_word_texts)
-dictionarycontroller = DictionaryMainController(root,partmodel)
-dictionarycontroller.init()
+
+# 다른곳에서 partbox 모듈 부를 때
+# import partbox as pb
+# import tkinter as tk
+# root = tk.Tk()
+# dictionarymaincontroller = pb.DictionaryMainController(root,pb.partmodel)
+# dictionarymaincontroller.init()
+
