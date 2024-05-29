@@ -1,6 +1,11 @@
 from wordDB.db_connection import connect_to_database
 from wordDB.makeSen import make_sentence, translate_to_korean
 import random
+from userClass import UserModel
+from wordDB.db_connection import connect_to_database
+from wordDB.makeSen import make_sentence, translate_to_korean
+import random
+from userClass import UserModel
 
 class WordModel:
     def __init__(self):
@@ -89,56 +94,113 @@ class WordModel:
         return choices
 
     def record_correct_word(self, word, mem_id):
-        insert_query = "INSERT INTO Correct_words (eng_word, member_id) VALUES (%s, %s)"
-        self.cursor.execute(insert_query, (word, mem_id))
-        self.conn.commit()
+        self.cursor.execute("SELECT user_id FROM sessions WHERE session_id=%s",(mem_id,))
+        result = self.cursor.fetchone()
+        if result:
+            real_id = result[0]
+            insert_query = "INSERT INTO Correct_words (eng_word, member_id) VALUES (%s, %s)"
+            self.cursor.execute(insert_query, (word, real_id))
+            self.conn.commit()
 
     def record_wrong_word(self, word, mem_id):
-        insert_query = "INSERT INTO Wrong_words (eng_word, member_id) VALUES (%s, %s)"
-        self.cursor.execute(insert_query, (word, mem_id))
-        self.conn.commit()
-
+        self.cursor.execute("SELECT user_id FROM sessions WHERE session_id=%s",(mem_id,))
+        result = self.cursor.fetchone()
+        if result:
+            real_id = result[0]
+            insert_query = "INSERT INTO Wrong_words (eng_word, member_id) VALUES (%s, %s)"
+            self.cursor.execute(insert_query, (word, real_id))
+            self.conn.commit()
 
     ###########
 
     def get_all_wrong_words(self, mem_id):
-        sql = "SELECT w.* FROM words w JOIN Wrong_words ww ON w.eng_word = ww.eng_word WHERE ww.member_id = %s"
-        self.cursor.execute(sql, (mem_id,))
-        return self.cursor.fetchall()
+        self.cursor.execute("SELECT user_id FROM sessions WHERE session_id=%s", (mem_id,))
+        result = self.cursor.fetchone()
+
+        # 결과가 있는지 확인
+        if result:
+            real_id = result[0]
+
+            # 두 번째 쿼리 실행
+            sql = "SELECT w.* FROM words w JOIN Wrong_words ww ON w.eng_word = ww.eng_word WHERE ww.member_id = %s"
+            self.cursor.execute(sql, (real_id,))
+            return self.cursor.fetchall()
+        else:
+            return []  # 결과가 없으면 빈 리스트 반환
 
     def get_all_correct_words(self, mem_id):
-        sql = "SELECT w.* FROM words w JOIN Correct_words cw ON w.eng_word = cw.eng_word WHERE cw.member_id = %s"
-        self.cursor.execute(sql, (mem_id,))
-        return self.cursor.fetchall()
+        self.cursor.execute("SELECT user_id FROM sessions WHERE session_id=%s",(mem_id,))
+        result = self.cursor.fetchone()
+        if result:
+            real_id = result[0]
+            sql = "SELECT w.* FROM words w JOIN Correct_words cw ON w.eng_word = cw.eng_word WHERE cw.member_id = %s"
+            self.cursor.execute(sql, (real_id,))
+            return self.cursor.fetchall()
+        else:
+            return []
 
     ####### BOOKMARK #######
     def add_bookmark(self, mem_id, eng_word):
-        insert_query = "INSERT INTO Bookmark_words (eng_word, member_id) VALUES (%s, %s)"
-        val = (eng_word, mem_id)
-        self.cursor.execute(insert_query, val)
-        self.conn.commit()
-        return True
+        self.cursor.execute("SELECT user_id FROM sessions WHERE session_id=%s",(mem_id,))
+        result = self.cursor.fetchone()
+        if result:
+            real_id = result[0]
+            insert_query = "INSERT INTO Bookmark_words (eng_word, member_id) VALUES (%s, %s)"
+            val = (eng_word, real_id)
+            self.cursor.execute(insert_query, val)
+            self.conn.commit()
+            return True
 
     def get_all_bookmarks(self, mem_id):
-        sql = "SELECT w.* FROM words w JOIN Bookmark_words bw ON w.eng_word = bw.eng_word WHERE bw.member_id = %s"
-        self.cursor.execute(sql, (mem_id,))
-        return self.cursor.fetchall()
+        self.cursor.execute("SELECT user_id FROM sessions WHERE session_id=%s",(mem_id,))
+        result = self.cursor.fetchone()
+        if result:
+            real_id = result[0]
+            sql = "SELECT w.* FROM words w JOIN Bookmark_words bw ON w.eng_word = bw.eng_word WHERE bw.member_id = %s"
+            self.cursor.execute(sql, (real_id,))
+            return self.cursor.fetchall()
+        else:
+            return []
 
     ####### STUDIED_WORDS #######
     def add_studied_word(self, mem_id, eng_word):
-        insert_query = "INSERT INTO Studied_words (eng_word, member_id) VALUES (%s, %s)"
-        val = (eng_word, mem_id)
-        self.cursor.execute(insert_query, val)
-        self.conn.commit()
-        return True
+        self.cursor.execute("SELECT user_id FROM sessions WHERE session_id=%s",(mem_id,))
+        result = self.cursor.fetchone()
+        if result:
+            real_id = result[0]
+            insert_query = "INSERT INTO Studied_words (eng_word, member_id) VALUES (%s, %s)"
+            val = (eng_word, real_id)
+            self.cursor.execute(insert_query, val)
+            self.conn.commit()
+            return True
 
     def get_all_studied_words(self, mem_id):
-        sql = "SELECT w.* FROM words w JOIN Studied_words sw ON w.eng_word = sw.eng_word WHERE sw.member_id = %s"
-        self.cursor.execute(sql, (mem_id,))
-        return self.cursor.fetchall()
-
+        self.cursor.execute("SELECT user_id FROM sessions WHERE session_id=%s",(mem_id,))
+        result = self.cursor.fetchone()
+        if result:
+            real_id = result[0]
+            sql = "SELECT w.* FROM words w JOIN Studied_words sw ON w.eng_word = sw.eng_word WHERE sw.member_id = %s"
+            self.cursor.execute(sql, (real_id,))
+            return self.cursor.fetchall()
+        else:
+            return []
 
 class WordView:
+    def display_message(self, message):
+        print(message)
+
+    def get_input(self, prompt):
+        return input(prompt)
+
+    def display_words(self, words):
+        if not words:
+            print("데이터베이스에 단어가 없습니다.")
+        else:
+            for word in words:
+                print("단어:", word[0])
+                print("의미:", word[1])
+                print("")
+
     def display_words(self, words):
         if not words:
             print("데이터베이스에 단어가 없습니다.")
@@ -162,25 +224,7 @@ class WordView:
 
     def get_user_choice(self):
         return input("정답을 선택하세요 (1~4, 종료하려면 'exit' 입력): ").strip()
-    def add_bookmark(self, mem_id):
-        eng_word = self.view.get_input("북마크에 추가할 단어를 입력하세요: ")
-        if self.model.check_word_exist(eng_word):
-            if self.model.add_bookmark(mem_id, eng_word):
-                self.view.display_message("북마크에 추가했습니다.")
-            else:
-                self.view.display_message("북마크 추가 중 오류가 발생했습니다.")
-        else:
-            self.view.display_message("해당 단어는 데이터베이스에 존재하지 않습니다.")
 
-    def add_studied_word(self, mem_id):
-        eng_word = self.view.get_input("학습한 단어로 추가할 단어를 입력하세요: ")
-        if self.model.check_word_exist(eng_word):
-            if self.model.add_studied_word(mem_id, eng_word):
-                self.view.display_message("학습한 단어 목록에 추가했습니다.")
-            else:
-                self.view.display_message("학습한 단어 추가 중 오류가 발생했습니다.")
-        else:
-            self.view.display_message("해당 단어는 데이터베이스에 존재하지 않습니다.")
     def display_word_list(self, words):
         if not words:
             print("목록이 비어 있습니다.")
@@ -205,6 +249,7 @@ class WordView:
     def display_studied_words(self, words):
         print("\n공부한 단어 목록:")
         self.display_word_list(words)
+
     def display_question(self, sentence, meaning, choices):
         print("\n문장:", sentence)
         print("뜻:", meaning)
@@ -218,119 +263,135 @@ class WordController:
     def __init__(self, model, view):
         self.model = model
         self.view = view
+        self.UserModel = UserModel()
+        self.current_session_id = None
 
-    def read_all_words(self, part):
-        words = self.model.read_words_by_part(part)
-        if words is not None:
-            self.view.display_words(words)
+    def login(self):
+        user_id = self.view.get_input("사용자 ID를 입력하세요: ")
+        password = self.view.get_input("비밀번호를 입력하세요: ")
+        user = self.UserModel.verify_user(user_id, password)
+        if user:
+            self.current_session_id = self.UserModel.create_session(user_id)
+            self.view.display_message(f"{user[1]}님, 환영합니다!")
         else:
-            self.view.display_message("단어를 가져오는 중 오류가 발생했습니다.")
+            self.view.display_message("로그인 실패: 잘못된 사용자 ID 또는 비밀번호입니다.")
 
-    def update_word(self):
-        word = self.view.get_input("수정할 단어를 입력하세요: ")
-        if self.model.check_word_exist(word):
-            contents = self.view.get_input("수정할 내용을 입력하세요: ")
-            if self.model.update_word(word, contents):
-                self.view.display_message("단어가 성공적으로 업데이트되었습니다.")
-            else:
-                self.view.display_message("단어 업데이트 중 오류가 발생했습니다.")
+    def logout(self):
+        if self.current_session_id:
+            self.UserModel.destroy_session(self.current_session_id)
+            self.current_session_id = None
+            self.view.display_message("로그아웃 되었습니다.")
         else:
-            self.view.display_message("수정할 단어가 존재하지 않습니다.")
+            self.view.display_message("로그인 상태가 아닙니다.")
 
-    def check_word_existence(self):
-        word = self.view.get_input("검색할 단어를 입력하세요: ")
-        if self.model.check_word_exist(word):
-            self.view.display_message("단어가 데이터베이스에 존재합니다.")
-        else:
-            self.view.display_message("단어가 데이터베이스에 존재하지 않습니다.")
-
+    ####### CREATE #######
     def add_word(self):
         word = self.view.get_input("추가할 단어를 입력하세요: ")
         meaning = self.view.get_input("단어의 의미를 입력하세요: ")
         message = self.model.add_word(word, meaning)
         self.view.display_message(message)
 
+    ####### READ #######
+    def read_words_by_part(self):
+        part = self.view.get_input("읽을 파트를 입력하세요: ")
+        words = self.model.read_words_by_part(part)
+        self.view.display_words(words)
+
+    ####### UPDATE #######
+    def update_word(self):
+        word = self.view.get_input("수정할 단어를 입력하세요: ")
+        contents = self.view.get_input("단어의 새로운 의미를 입력하세요: ")
+        success = self.model.update_word(word, contents)
+        if success:
+            self.view.display_message("단어가 성공적으로 수정되었습니다.")
+        else:
+            self.view.display_message("단어 수정에 실패했습니다.")
+
+    ####### DELETE #######
     def delete_word(self):
         word = self.view.get_input("삭제할 단어를 입력하세요: ")
-        if self.model.check_word_exist(word):
-            message = self.model.delete_word(word)
-            self.view.display_message(message)
-        else:
-            self.view.display_message("삭제할 단어가 존재하지 않습니다.")
-    def add_bookmark(self, mem_id):
-        eng_word = self.view.get_input("북마크에 추가할 단어를 입력하세요: ")
-        if self.model.check_word_exist(eng_word):
-            if self.model.add_bookmark(mem_id, eng_word):
-                self.view.display_message("북마크에 추가했습니다.")
-            else:
-                self.view.display_message("북마크 추가 중 오류가 발생했습니다.")
-        else:
-            self.view.display_message("해당 단어는 데이터베이스에 존재하지 않습니다.")
+        message = self.model.delete_word(word)
+        self.view.display_message(message)
 
-    def add_studied_word(self, mem_id):
-        eng_word = self.view.get_input("학습한 단어로 추가할 단어를 입력하세요: ")
-        if self.model.check_word_exist(eng_word):
-            if self.model.add_studied_word(mem_id, eng_word):
-                self.view.display_message("학습한 단어 목록에 추가했습니다.")
-            else:
-                self.view.display_message("학습한 단어 추가 중 오류가 발생했습니다.")
-        else:
-            self.view.display_message("해당 단어는 데이터베이스에 존재하지 않습니다.")
-    def get_wrong_words(self, mem_id):
-        wrong_words = self.model.get_all_wrong_words(mem_id)
-        self.view.display_wrong_words(wrong_words)
-
-    def get_correct_words(self, mem_id):
-        correct_words = self.model.get_all_correct_words(mem_id)
-        self.view.display_correct_words(correct_words)
-
-    def get_bookmarks(self, mem_id):
-        bookmarks = self.model.get_all_bookmarks(mem_id)
-        self.view.display_bookmarks(bookmarks)
-
-    def get_studied_words(self, mem_id):
-        studied_words = self.model.get_all_studied_words(mem_id)
-        self.view.display_studied_words(studied_words)
-    def word_test(self, mem_id):
-        while True:
-            part = self.view.get_input("시험 볼 파트 번호를 입력하세요 (종료하려면 'exit' 입력): ").strip()
-            if part.lower() == 'exit':
-                return
-            if not part.isdigit():
-                self.view.display_message("올바른 파트 번호를 입력하세요.")
-                continue
-
-            part = int(part)
+    ####### WORDTEST - wrong, correct words #######
+    def take_quiz(self):
+        if self.current_session_id:
+            part = self.view.get_input("테스트할 파트를 입력하세요: ")
             words = self.model.get_words_from_part(part)
             if not words:
-                self.view.display_message("해당 파트 번호에 대한 단어가 없습니다.")
-                continue
-
-            for word_data in words:
-                word, meaning, example_sentence, example_sentence_meaning = word_data
-                sentence_with_blank = example_sentence.replace(word, "_____")
-                choices = self.model.get_random_choices(word, part)
-                self.view.display_question(sentence_with_blank, example_sentence_meaning, choices)
-
-                while True:
-                    user_choice = self.view.get_user_choice()
-                    if user_choice.lower() == 'exit':
-                        return
-
-                    if user_choice.isdigit() and 1 <= int(user_choice) <= 4:
-                        selected_word = choices[int(user_choice) - 1]
-                        if selected_word == word:
-                            self.model.record_correct_word(word, mem_id)
-                            self.view.display_message("정답입니다!")
-                        else:
-                            self.model.record_wrong_word(word, mem_id)
-                            self.view.display_message(f"틀렸습니다. 정답은 '{word}'입니다.")
-                        break
+                self.view.display_message("선택한 파트에 단어가 없습니다.")
+                return
+            random.shuffle(words)
+            for word in words:
+                choices = self.model.get_random_choices(word[0], part)
+                self.view.display_question(word[2], word[3], choices)
+                user_choice = self.view.get_user_choice()
+                if user_choice.lower() == 'exit':
+                    break
+                try:
+                    user_choice = int(user_choice)
+                    if choices[user_choice - 1] == word[0]:
+                        self.view.display_message("정답입니다!")
+                        self.model.record_correct_word(word[0], self.current_session_id)
                     else:
-                        self.view.display_message("올바른 선택지를 입력하세요. (1~4 중 하나를 입력하세요.)")
+                        self.view.display_message(f"오답입니다. 정답은 {word[0]}입니다.")
+                        self.model.record_wrong_word(word[0], self.current_session_id)
+                except (ValueError, IndexError):
+                    self.view.display_message("잘못된 입력입니다. 1에서 4 사이의 숫자를 입력하세요.")
+        else:
+            self.view.display_message("퀴즈를 시작하기 전에 로그인하세요.")
 
-            self.view.display_message(f"파트 {part}의 모든 단어를 테스트했습니다.")
-            break
+    def view_wrong_words(self):
+        if self.current_session_id:
+            words = self.model.get_all_wrong_words(self.current_session_id)
+            self.view.display_wrong_words(words)
+        else:
+            self.view.display_message("로그인 상태가 아닙니다.")
+
+    def view_correct_words(self):
+        if self.current_session_id:
+            words = self.model.get_all_correct_words(self.current_session_id)
+            self.view.display_correct_words(words)
+        else:
+            self.view.display_message("로그인 상태가 아닙니다.")
+
+    ####### BOOKMARK #######
+    def add_bookmark(self):
+        if self.current_session_id:
+            eng_word = self.view.get_input("북마크할 단어를 입력하세요: ")
+            success = self.model.add_bookmark(self.current_session_id, eng_word)
+            if success:
+                self.view.display_message("단어가 북마크에 추가되었습니다.")
+            else:
+                self.view.display_message("단어 추가에 실패했습니다.")
+        else:
+            self.view.display_message("로그인 상태가 아닙니다.")
+
+    def view_bookmarks(self):
+        if self.current_session_id:
+            words = self.model.get_all_bookmarks(self.current_session_id)
+            self.view.display_bookmarks(words)
+        else:
+            self.view.display_message("로그인 상태가 아닙니다.")
+
+    ####### STUDIED_WORDS #######
+    def add_studied_word(self):
+        if self.current_session_id:
+            eng_word = self.view.get_input("공부한 단어를 입력하세요: ")
+            success = self.model.add_studied_word(self.current_session_id, eng_word)
+            if success:
+                self.view.display_message("공부한 단어로 추가되었습니다.")
+            else:
+                self.view.display_message("단어 추가에 실패했습니다.")
+        else:
+            self.view.display_message("로그인 상태가 아닙니다.")
+
+    def view_studied_words(self):
+        if self.current_session_id:
+            words = self.model.get_all_studied_words(self.current_session_id)
+            self.view.display_studied_words(words)
+        else:
+            self.view.display_message("로그인 상태가 아닙니다.")
 
 def main():
     model = WordModel()
@@ -338,52 +399,50 @@ def main():
     controller = WordController(model, view)
 
     while True:
-        print("\n1. 단어 조회")
-        print("2. 단어 수정")
-        print("3. 단어 추가")
-        print("4. 단어 삭제")
-        print("5. 틀린 단어 목록 조회")
-        print("6. 맞은 단어 목록 조회")
-        print("7. 북마크 목록 조회")
-        print("8. 북마크 추가")
-        print("9. 학습한 단어로 추가")
-        print("10. 학습한 단어 목록 조회")
-        print("11. 단어 테스트")
-        print("12. 종료")
+        print("\n1. 로그인")
+        print("2. 로그아웃")
+        print("3. 단어 조회")
+        print("4. 단어 수정")
+        print("5. 단어 추가")
+        print("6. 단어 삭제")
+        print("7. 틀린 단어 목록 조회")
+        print("8. 맞은 단어 목록 조회")
+        print("9. 북마크 추가")
+        print("10. 학습한 단어로 추가")
+        print("11. 학습한 단어 목록 조회")
+        print("12. 단어 테스트")
+        print("13. 북마크 단어 목록 조회")  # 북마크 단어 목록 조회 추가
+        print("14. 종료")
 
         choice = view.get_input("메뉴를 선택하세요: ")
 
         if choice == '1':
-            part = int(view.get_input("조회할 파트를 입력하세요: "))
-            controller.read_all_words(part)
+            controller.login()
         elif choice == '2':
-            controller.update_word()
+            controller.logout()
         elif choice == '3':
-            controller.add_word()
+            controller.read_words_by_part()
         elif choice == '4':
-            controller.delete_word()
+            controller.update_word()
         elif choice == '5':
-            mem_id = view.get_input("회원 ID를 입력하세요: ")
-            controller.get_wrong_words(mem_id)
+            controller.add_word()
         elif choice == '6':
-            mem_id = view.get_input("회원 ID를 입력하세요: ")
-            controller.get_correct_words(mem_id)
+            controller.delete_word()
         elif choice == '7':
-            mem_id = view.get_input("회원 ID를 입력하세요: ")
-            controller.get_bookmarks(mem_id)
+            controller.view_wrong_words()
         elif choice == '8':
-            mem_id = view.get_input("회원 ID를 입력하세요: ")
-            controller.add_bookmark(mem_id)
+            controller.view_correct_words()
         elif choice == '9':
-            mem_id = view.get_input("회원 ID를 입력하세요: ")
-            controller.add_studied_word(mem_id)
+            controller.add_bookmark()
         elif choice == '10':
-            mem_id = view.get_input("회원 ID를 입력하세요: ")
-            controller.get_studied_words(mem_id)
+            controller.add_studied_word()
         elif choice == '11':
-            mem_id = view.get_input("회원 ID를 입력하세요: ")
-            controller.word_test(mem_id)
+            controller.view_studied_words()
         elif choice == '12':
+            controller.take_quiz()
+        elif choice == '13':
+            controller.view_bookmarks()
+        elif choice == '14':
             view.display_message("프로그램을 종료합니다.")
             break
         else:

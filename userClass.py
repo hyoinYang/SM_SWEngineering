@@ -1,4 +1,5 @@
 from wordDB.db_connection import connect_to_database
+import uuid
 
 class UserModel:
     def __init__(self):
@@ -39,6 +40,31 @@ class UserModel:
         self.cursor.execute("SELECT * FROM Member")
         return self.cursor.fetchall()
 
+    def create_session(self, user_id):
+        session_id = str(uuid.uuid4())
+        insert_query = "INSERT INTO sessions (session_id, user_id) VALUES (%s, %s)"
+        self.cursor.execute(insert_query, (session_id, user_id))
+        self.conn.commit()
+        return session_id
+
+    def get_user_id_from_session(self, session_id):
+        select_query = "SELECT user_id FROM sessions WHERE session_id = %s"
+        self.cursor.execute(select_query, (session_id,))
+        result = self.cursor.fetchone()
+        return result[0] if result else None
+
+    def destroy_session(self, session_id):
+        delete_query = "DELETE FROM sessions WHERE session_id = %s"
+        self.cursor.execute(delete_query, (session_id,))
+        self.conn.commit()
+
+    def verify_user(self, user_id, password):
+        query = "SELECT id, name FROM Member WHERE id = %s AND password = %s"
+        self.cursor.execute(query, (user_id, password))
+        return self.cursor.fetchone()
+
+
+
 class UserView:
     @staticmethod
     def show_menu():
@@ -66,6 +92,7 @@ class UserController:
     def __init__(self, model, view):
         self.model = model
         self.view = view
+        self.current_session_id = None
 
     def main(self):
         while True:
@@ -82,6 +109,8 @@ class UserController:
                 self.find_password()
             elif choice == '5':
                 self.view.display_message("프로그램을 종료합니다.")
+                if self.current_session_id:
+                    self.model.destroy_session(self.current_session_id)
                 break
             else:
                 self.view.display_message("잘못된 입력입니다. 다시 시도하세요.")
@@ -111,6 +140,7 @@ class UserController:
         password = self.view.get_input("비밀번호를 입력하세요: ")
         name = self.model.login(user_id, password)
         if name:
+            self.current_session_id = self.model.create_session(user_id)
             if name == 'admin':
                 self.view.display_message(f"{name}님, 환영합니다!")
                 self.view.display_message("관리자 모드로 로그인되었습니다.")
