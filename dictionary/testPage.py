@@ -1,4 +1,3 @@
-import sidebar as bar
 import tkinter as tk
 from tkinter import ttk, messagebox
 
@@ -29,8 +28,6 @@ class TestView:
         """        # 기존 윈도우 내용 삭제
                 for widget in self.root.winfo_children():
                     widget.destroy()"""
-        
-        bar.toggle_menu()
 
         """style = ttk.Style()
             style.theme_use('clam')  # 스타일 테마 선택 (Tkinter의 기본 테마 중 하나)
@@ -147,10 +144,9 @@ class TestController:
             selected_questions=TestModel.questions[0]
         
     
-
-    
-
+"""
 if __name__ == "__main__":
     root = tk.Tk()
     app = TestController(root)
     root.mainloop()
+"""

@@ -81,27 +81,6 @@ class ManagementView:
         style = ttk.Style()
         style.theme_use('clam')
 
-
-        # -------------------------------- 회색 바 설정 --------------------------------
-        """        
-        style.configure('TFrame', background='#838383')
-            title_bar_frame = ttk.Frame(root, style='TFrame', height=30)
-            title_bar_frame.pack(fill='x')
-
-            gear_icon = ImageTk.PhotoImage(Image.open(ManagementModel.gear_icon_path).resize((30, 30)))
-            menu_icon = ImageTk.PhotoImage(Image.open(ManagementModel.menu_icon_path).resize((30, 30)))
-
-            gear_button = tk.Button(title_bar_frame, image=gear_icon, borderwidth=0, bg="#838383", cursor="hand2")
-            gear_button.pack(side=tk.LEFT, padx=20)
-
-            text_label = tk.Label(title_bar_frame, text="단어 관리", font=("Helvetica", 15, "bold"), background="#838383")
-            text_label.pack(side="left", padx=5)
-
-            menu_button = tk.Button(title_bar_frame, image=menu_icon, borderwidth=0, bg="#838383", cursor="hand2")
-            menu_button.pack(side=tk.RIGHT, padx=20)
-        """ 
-        
-
         # -------------------------------- 내용 --------------------------------
         # Canvas 생성
         canvas = tk.Canvas(root)
@@ -188,8 +167,3 @@ class ManagementController:
 
     def upload_csv_file():
         print("csv 파일 업로드 완")
-
-"""if __name__ == "__main__":
-    root = tk.Tk()
-    ManagementController(root)
-    root.mainloop()"""
