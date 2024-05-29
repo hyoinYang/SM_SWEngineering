@@ -1,0 +1,4 @@
+.env
+__pycache__
+dictionary/__pycache__
+wordDB/__pycache__
