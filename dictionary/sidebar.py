@@ -297,7 +297,7 @@ head_frame.pack_propagate(False)
 head_frame.configure(height=50)
 
 def btn1_page(root):
-    LoginController(root)
+    return lambda test:LoginController(root)
 
 
 def btn2_page():
