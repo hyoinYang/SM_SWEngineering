@@ -116,6 +116,7 @@ class WordModel:
     def get_all_wrong_words(self, mem_id):
         self.cursor.execute("SELECT user_id FROM sessions WHERE session_id=%s", (mem_id,))
         result = self.cursor.fetchone()
+        print(result)
 
         # 결과가 있는지 확인
         if result:
@@ -199,15 +200,8 @@ class WordView:
             for word in words:
                 print("단어:", word[0])
                 print("의미:", word[1])
-                print("")
-
-    def display_words(self, words):
-        if not words:
-            print("데이터베이스에 단어가 없습니다.")
-        else:
-            for word in words:
-                print("단어:", word[0])
-                print("의미:", word[1])
+                print("예문:", word[2])
+                print("예문해석:", word[3])
                 print("")
 
     def display_message(self, message):
@@ -224,8 +218,10 @@ class WordView:
             print("목록이 비어 있습니다.")
         else:
             for word in words:
-                print("단어:", word[1])  # Assuming index 1 is the English word
-                print("의미:", word[2])  # Assuming index 2 is the meaning
+                print("단어:", word[0])
+                print("의미:", word[1])
+                print("예문:", word[2])
+                print("예문해석:",word[3])
                 print("")
 
     def display_wrong_words(self, words):
@@ -320,19 +316,24 @@ class WordController:
             for word in words:
                 choices = self.model.get_random_choices(word[0], part)
                 self.view.display_question(word[0], word[2], word[3], choices)
-                user_choice = self.view.get_user_choice()
-                if user_choice.lower() == 'exit':
-                    break
-                try:
-                    user_choice = int(user_choice)
-                    if choices[user_choice - 1] == word[0]:
-                        self.view.display_message("정답입니다!")
-                        self.model.record_correct_word(word[0], self.current_session_id)
-                    else:
-                        self.view.display_message(f"오답입니다. 정답은 {word[0]}입니다.")
-                        self.model.record_wrong_word(word[0], self.current_session_id)
-                except (ValueError, IndexError):
-                    self.view.display_message("잘못된 입력입니다. 1에서 4 사이의 숫자를 입력하세요.")
+                while True:
+                    user_choice = self.view.get_user_choice()
+                    if user_choice.lower() == 'exit':
+                        return  # 퀴즈를 종료하고 메서드를 종료합니다.
+                    try:
+                        user_choice = int(user_choice)
+                        if user_choice not in [1, 2, 3, 4]:
+                            raise ValueError("잘못된 입력입니다. 1에서 4 사이의 숫자를 입력하세요.")
+                        break  # 유효한 입력이므로 루프를 종료합니다.
+                    except (ValueError, IndexError):
+                        self.view.display_message("잘못된 입력입니다. 1에서 4 사이의 숫자를 입력하세요.")
+
+                if choices[user_choice - 1] == word[0]:
+                    self.view.display_message("정답입니다!")
+                    self.model.record_correct_word(word[0], self.current_session_id)
+                else:
+                    self.view.display_message(f"오답입니다. 정답은 {word[0]}입니다.")
+                    self.model.record_wrong_word(word[0], self.current_session_id)
         else:
             self.view.display_message("퀴즈를 시작하기 전에 로그인하세요.")
 
