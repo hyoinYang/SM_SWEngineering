@@ -25,29 +25,26 @@ class EtsPlaceView:
         self.setup_gui()
     
     def setup_gui(self):
-        title = TitleView(root, "토익 시험 일정")
-        title.init_title()
-
         self.ets_icon = ImageTk.PhotoImage(Image.open(EtsPlaceModel.ets_icon_path))
         self.member_login_icon = ImageTk.PhotoImage(Image.open(EtsPlaceModel.member_login_icon_path))
         self.non_member_login_icon = ImageTk.PhotoImage(Image.open(EtsPlaceModel.non_member_login_icon_path))
 
-        self.ets_button = tk.Button(title.canvas, image=self.ets_icon, borderwidth=0, bg="#FFFFFF", cursor="hand2")
+        self.ets_button = tk.Button(self.root, image=self.ets_icon, borderwidth=0, bg="#FFFFFF", cursor="hand2")
         self.ets_button.pack(pady=(20, 0))
 
-        self.ets_label = tk.Label(title.canvas, text="[ 고사장 조회 ]", font=("Helvetica", 15, "bold"), bg="#FFFFFF")
+        self.ets_label = tk.Label(self.root, text="[ 고사장 조회 ]", font=("Helvetica", 15, "bold"), bg="#FFFFFF")
         self.ets_label.pack(pady=(0, 30))
 
-        self.member_login_button = tk.Button(title.canvas, image=self.member_login_icon, borderwidth=0, bg="#FFFFFF", cursor="hand2")
+        self.member_login_button = tk.Button(self.root, image=self.member_login_icon, borderwidth=0, bg="#FFFFFF", cursor="hand2")
         self.member_login_button.pack()
 
-        self.member_login_label = tk.Label(title.canvas, text="[ 회원 정보 조회 (YBM) ]", font=("Helvetica", 15, "bold"), bg="#FFFFFF")
+        self.member_login_label = tk.Label(self.root, text="[ 회원 정보 조회 (YBM) ]", font=("Helvetica", 15, "bold"), bg="#FFFFFF")
         self.member_login_label.pack(pady=(0, 30))
 
-        self.non_member_login_button = tk.Button(title.canvas, image=self.non_member_login_icon, borderwidth=0, bg="#FFFFFF", cursor="hand2")
+        self.non_member_login_button = tk.Button(self.root, image=self.non_member_login_icon, borderwidth=0, bg="#FFFFFF", cursor="hand2")
         self.non_member_login_button.pack()
 
-        self.non_member_login_label = tk.Label(title.canvas, text="[ 비회원 정보 조회 (YBM) ]", font=("Helvetica", 15, "bold"), bg="#FFFFFF")
+        self.non_member_login_label = tk.Label(self.root, text="[ 비회원 정보 조회 (YBM) ]", font=("Helvetica", 15, "bold"), bg="#FFFFFF")
         self.non_member_login_label.pack()
     
     def setup_menu(self):
