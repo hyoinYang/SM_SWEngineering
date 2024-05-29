@@ -5,9 +5,15 @@ from findPassword import Controller as FindController
 
 # ----------------------------- Model -----------------------------
 class FindModel:
-    def validate_find_password(self):
+    def validate_find_password(self, root):
+        import findPassword as fs
+
         messagebox.showinfo("아이디 찾기", "비밀번호 찾기 페이지로 이동합니다.")
-        FindController(self)
+        
+        for widget in root.winfo_children():
+            widget.destroy()    
+
+        fs.Controller(root)
 
     def validate_find_id(self):
         messagebox.showinfo("아이디 찾기", "아이디는 ####입니다.")
@@ -19,11 +25,8 @@ class FindView:
         self.setup_ui()
 
     def setup_ui(self):
-        title = TitleView(self.root, "아이디 찾기")
-        title.init_title()
-
         # 이름 라벨 및 텍스트 상자
-        name_frame = tk.Frame(title.canvas, relief="solid", borderwidth=1, highlightbackground="gray", highlightcolor="gray")
+        name_frame = tk.Frame(self.root, relief="solid", borderwidth=1, highlightbackground="gray", highlightcolor="gray")
         name_frame.pack(pady=10)
 
         name_icon = tk.PhotoImage(file="resource/name_entry.png").subsample(4)
@@ -35,7 +38,7 @@ class FindView:
         self.name_entry.insert(0, "이름")
 
         # 생년월일 라벨 및 텍스트 상자
-        birth_frame = tk.Frame(title.canvas, relief="solid", borderwidth=1, highlightbackground="gray", highlightcolor="gray")
+        birth_frame = tk.Frame(self.root, relief="solid", borderwidth=1, highlightbackground="gray", highlightcolor="gray")
         birth_frame.pack(pady=10)
 
         email_icon = tk.PhotoImage(file="resource/email_entry.png").subsample(24)
@@ -48,14 +51,14 @@ class FindView:
 
         # 아이디 찾기 버튼
         find_id_icon = tk.PhotoImage(file="resource/signup_btn.png").subsample(2)
-        find_id_button = tk.Button(title.canvas, text="                 아이디 찾기                 ", bg="#838383", relief="flat", bd=0, command=lambda:FindModel.validate_find_id(self), cursor="hand2")
+        find_id_button = tk.Button(self.root, text="                 아이디 찾기                 ", bg="#838383", relief="flat", bd=0, command=lambda:FindModel.validate_find_id(self), cursor="hand2")
         find_id_button.image = find_id_icon
 
         find_id_button.pack(pady=10)
 
         # 비밀번호 찾기 버튼
         find_password_icon = tk.PhotoImage(file="resource/signup_btn.png").subsample(2)
-        find_password_button = tk.Button(title.canvas, text="                 비밀번호 찾기                 ", bg="#838383", relief="flat", bd=0, command=lambda:FindModel.validate_find_password(self), cursor="hand2")
+        find_password_button = tk.Button(self.root, text="                 비밀번호 찾기                 ", bg="#838383", relief="flat", bd=0, command=lambda:FindModel.validate_find_password(self, self.root), cursor="hand2")
         find_password_button.image = find_password_icon
 
         find_password_button.pack(pady=10)

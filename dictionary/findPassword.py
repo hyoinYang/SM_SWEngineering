@@ -14,11 +14,9 @@ class View:
         self.setup_ui()
 
     def setup_ui(self):
-        title = TitleView(self.root, "비밀번호 찾기")
-        title.init_title()
 
         # 사용자 이름 라벨 및 텍스트 상자
-        username_frame = tk.Frame(title.canvas, relief="solid", borderwidth=1, highlightbackground="gray", highlightcolor="gray")
+        username_frame = tk.Frame(self.root, relief="solid", borderwidth=1, highlightbackground="gray", highlightcolor="gray")
         username_frame.pack(pady = 10)
 
         username_icon = tk.PhotoImage(file="resource/username_entry.png").subsample(10)
@@ -31,7 +29,7 @@ class View:
         self.username_entry.insert(0, "Username")
 
         # 비밀번호 라벨 및 텍스트 상자
-        password_frame = tk.Frame(title.canvas, relief="solid", borderwidth=1, highlightbackground="gray", highlightcolor="gray")
+        password_frame = tk.Frame(self.root, relief="solid", borderwidth=1, highlightbackground="gray", highlightcolor="gray")
         password_frame.pack(pady=10)
 
         password_icon = tk.PhotoImage(file="resource/password_entry.png").subsample(37)
@@ -43,7 +41,7 @@ class View:
         self.password_entry.insert(0, "password")
 
         # 이름 라벨 및 텍스트 상자
-        name_frame = tk.Frame(title.canvas, relief="solid", borderwidth=1, highlightbackground="gray", highlightcolor="gray")
+        name_frame = tk.Frame(self.root, relief="solid", borderwidth=1, highlightbackground="gray", highlightcolor="gray")
         name_frame.pack(pady=10)
 
         name_icon = tk.PhotoImage(file="resource/name_entry.png").subsample(4)
@@ -55,7 +53,7 @@ class View:
         self.name_entry.insert(0, "이름")
 
         # 이메일 라벨 및 텍스트 상자
-        email_frame = tk.Frame(title.canvas, relief="solid", borderwidth=1, highlightbackground="gray", highlightcolor="gray")
+        email_frame = tk.Frame(self.root, relief="solid", borderwidth=1, highlightbackground="gray", highlightcolor="gray")
         email_frame.pack(pady=10)
 
         email_icon = tk.PhotoImage(file="resource/email_entry.png").subsample(24)
@@ -68,7 +66,7 @@ class View:
 
         # 회원가입 버튼
         signup_icon = tk.PhotoImage(file="resource/signup_btn.png").subsample(2)
-        signup_button = tk.Button(title.canvas, text="                 비밀번호 찾기                 ", bg="#838383", relief="flat", bd=0, command=lambda:Model.validate_find_password(self), cursor="hand2")
+        signup_button = tk.Button(self.root, text="                 비밀번호 찾기                 ", bg="#838383", relief="flat", bd=0, command=lambda:Model.validate_find_password(self), cursor="hand2")
         signup_button.image = signup_icon
 
         signup_button.pack(pady=10)

@@ -19,6 +19,24 @@ class LoginModel:
 
         SignupController(root)
 
+    def validate_find_id(self, root):
+        import findId as fi
+        messagebox.showinfo("아이디 찾기", "아이디 찾기 창으로 이동합니다.")
+        
+        for widget in root.winfo_children():
+            widget.destroy()    
+
+        fi.FindController(root)
+    
+    def validate_find_password(self, root):
+        import findPassword as fs
+        messagebox.showinfo("비밀번호 찾기", "비밀번호 찾기 창으로 이동합니다.")
+        
+        for widget in root.winfo_children():
+            widget.destroy()    
+
+        fs.Controller(root)
+
 # ----------------------------- View -----------------------------
 class LoginView:
     def __init__(self, root):
@@ -67,6 +85,16 @@ class LoginView:
         signup_button.image = signup_icon
 
         signup_button.pack(pady=10)
+
+        # 아이디 찾기 버튼
+        find_id_button = tk.Button(self.root, text="아이디 찾기", relief="flat", bd=0, command=lambda:LoginModel.validate_find_id(self, self.root), cursor="hand2")
+        find_id_button.pack(pady=10)
+
+        # 비밀번호 찾기 버튼
+        find_id_password = tk.Button(self.root, text="비밀번호 찾기", relief="flat", bd=0, command=lambda:LoginModel.validate_find_password(self, self.root), cursor="hand2")
+        find_id_password .pack(pady=10)
+
+
 
     def get_username(self):
         return self.username_entry.get()
