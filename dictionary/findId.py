@@ -73,6 +73,7 @@ class FindController:
         self.root = root
         self.model = FindModel()
         self.view = FindView(root)
+        root.mainloop()
         #self.bind_events()
 
     def validate_login(self):
@@ -93,4 +94,4 @@ if __name__ == "__main__":
     center_width = (my_windows_width/2)-(app_width/2)
     center_height = (my_windows_height/2)-(app_height/2)
     root.geometry(f"{app_width}x{app_height}+{int(center_width)}+{int(center_height)}")
-    root.mainloop()
+

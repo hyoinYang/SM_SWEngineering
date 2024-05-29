@@ -83,6 +83,7 @@ class SignupView:
 class SignupController:
     def __init__(self, root):
         self.root = root
+
         #self.model = SignupModel()
         self.view = SignupView(root)
         #self.bind_events()
@@ -98,6 +99,7 @@ class SignupController:
 if __name__ == "__main__":
     root = tk.Tk()
     app = SignupController(root)
+
     my_windows_width = root.winfo_screenwidth()
     my_windows_height = root.winfo_screenheight()
     app_width = 700
