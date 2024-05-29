@@ -79,8 +79,8 @@ class DictionaryMainController:
         self.setting_size()
 
         # 타이틀바 생성 -> 나중에 코드 통합되면 지워도 될듯
-        title = TitleView(self.root,"단어장")
-        title.init_title()
+        #title = TitleView(self.root,"단어장")
+        #title.init_title()
 
         for part_index in range(0,math.ceil(self.dictionary_db.word_cnt/30)): # 각 파트에 단어 30개만 있다고 가정. 
             if part_index == int(self.dictionary_db.word_cnt/30): # 마지막 케이스 일 때, 나중에 /120으로 수정 -> 마지막 케이스는 단어 개수가 딱 120개가 아니기 때문
@@ -116,3 +116,4 @@ partmodel = DictionaryModel(dictionary,sentence,learned_word_list,wrong_word_tex
 # root = tk.Tk()
 # dictionarymaincontroller = pb.DictionaryMainController(root,pb.partmodel)
 # dictionarymaincontroller.init()
+

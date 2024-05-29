@@ -17,6 +17,9 @@ class TitleView:
         self.scrollbar = ttk.Scrollbar(window, orient="vertical", command=self.canvas.yview)
         self.frame = tk.Frame(self.canvas)
 
+    #window = tk.Tk()
+    #canvas = tk.Canvas(self.window)
+    #frame = tk.Frame(canvas)
     # style 객체 설정
     def setting_style(self):
         self.style.theme_use('clam')
