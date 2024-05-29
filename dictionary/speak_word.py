@@ -17,16 +17,18 @@ class SpeakWord:
 
     def speak_Word(self): #입력된 단어, 예문을 발음하는 기능
         self.driver.find_element(By.XPATH,"//*[@id='btn-toolbar-source']/span[1]/span/span/button").click()
-
+        
     def input_Word(self,word): # 입력된 단어, 예문을 입력하는 기능
         self.driver.find_element(By.XPATH,"//*[@id='txtSource']").send_keys(word)
+        time.sleep(0.2)
         self.driver.find_element(By.XPATH,"//*[@id='ddSourceLanguageButton']/span").click()
+        time.sleep(0.2) 
         self.driver.find_element(By.XPATH,"//*[@id='ddSourceLanguage']/div[2]/ul/li[3]/a").click()        
-        time.sleep(1) 
+        time.sleep(1)
 
     def erase_English(self): # 입력된 단어, 예문을 지움
         self.driver.find_element(By.XPATH,"//*[@id='sourceEditArea']/button").click()
-
+        time.sleep(0.2)
     def close_Web(self): # 웹페이지 닫음 ( 크롤링 기능은 유지 )
         self.driver.close()
     
@@ -35,3 +37,5 @@ class SpeakWord:
             self.erase_English()
         self.input_Word(word)
         self.speak_Word()
+        self.count = 1
+        

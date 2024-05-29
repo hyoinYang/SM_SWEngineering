@@ -5,6 +5,9 @@ from part_dict import PartDictModel
 from titlebar import TitleView
 from speak_word import SpeakWord
 import math
+import sys, os
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+from wordClass import WordDBModel
 
 # part 1 ~ n 까지 박스 생성
 class PartView: # part_index는 part 몇 인지, learend_word_list는 각 part에서의 배운 단어 개수가 들어간다. part_dict,part_sentece는 한 파트에 들어갈 단어, 예문, 뜻이다.
@@ -17,7 +20,7 @@ class PartView: # part_index는 part 몇 인지, learend_word_list는 각 part�
         self.part_button = tk.Button(self.white_box,relief="flat",text=f"PART {part_dict_model.part_index+1}",width=11,height=2,font="Helvetica",
         command=lambda:part_controller.part_event()) #part controller에 한 파트의 단어,예문 넣었음
         self.learned_word = dictionary_db.learned_word_list[part_dict_model.part_index] # 특정 파트의 배운 단어
-        self.progress_label = Label(self.white_box, text=f"학습률: {self.learned_word} / 30 [ {self.learned_word//30*100}% ]",background="white",font="Helvetica") # 학습률 출력
+        self.progress_label = Label(self.white_box, text=f"학습률: {self.learned_word} / 30 [ {int((self.learned_word/30)*100)}% ]",background="white",font="Helvetica") # 학습률 출력
         self.progress_bar = Progressbar(self.white_box, orient="horizontal", mode="determinate",length=300) # 학습률에 따른 게이지바
 
     # white_box는 part, 진행률, 학습률이 들어갈 box
@@ -84,17 +87,21 @@ class DictionaryMainController:
 
 
 """db 관련 """
-dictionary = ["apple","banana","chief","depend","eagle","fantastic","golf","high","identify","joke",
-"sophisticated","quality","complete","information","consecutive","deliberation","formerly","enhance","decrease","estimate",
-"impressive","reduce","beware","innate","restor","necessary","health","renovate","arise","certain",
-"policy","circumscribe","prohibit","prohibition","budget","preserve","calcuate","assent","exhibit","safety",
-"refuse","expend","require","contribute","competent","insurance","frquently","mandatory","retire","abuse",
-"instruct","amend","garner","monetary","financial"
-] 
+WordDB = WordDBModel()
+eng_word = WordDB.read_eng_words()
+kor_word = WordDB.read_kor_words()
+
+dictionary = eng_word
 # 나중에 db에 있는 단어장 dictionary에 넣기
 word_cnt = len(dictionary) # 단어 총 개수
 learned_word_list=[0 for i in range(0,math.ceil(word_cnt/30))] # range(0,파트 개수) -> list에는 각 part에서의 배운 단어 개수가 들어간다. 
-sentence = dictionary # 나중에 db에 있는 예문 넣기 ! , 임시로 sentence = dictionary로 했음
+eng_sen = WordDB.read_sentece()
+kor_sen = WordDB.read_kor_sentece()
+sen_total = []
+for i in range(len(eng_sen)):
+    newsen = '\n'.join([kor_word[i],eng_sen[i], kor_sen[i]])
+    sen_total.append(newsen)
+sentence = sen_total # 나중에 db에 있는 예문 넣기 ! , 임시로 sentence = dictionary로 했음
 wrong_word_texts = [] # 오답노트에 들어가는 텍스트 문자( 단어 )
 learned_word_texts = [] # 배운 단어 리스트 ( 파트별로 구현할 필요 x )
 

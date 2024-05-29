@@ -19,7 +19,9 @@ from titlebar import TitleView
 import math
 from tkinter.ttk import Progressbar, Label
 import partbox as pb
-
+import sys, os
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+from examInfoClass import ExamDBModel
 
 root = tk.Tk()
 root.geometry('700x550')
@@ -457,17 +459,8 @@ def btn3_page():
 def btn4_page():
     class ExamModel:
         def __init__(self):
-            self.exam_info = [
-                {"일정": "2024년 4월 14일 (일) \n09:20",
-                 "접수기간": "2024년 2월 26일 (월) \n~ 2024년 4월 1일 (월)",
-                 "성적발표": "2024년 4월 24일 (수) \n12:00"},
-                {"일정": "2024년 5월 19일 (일) \n09:20",
-                 "접수기간": "2024년 3월 25일 (월) \n~ 2024년 5월 13일 (월)",
-                 "성적발표": "2024년 5월 28일 (화) \n09:20"},
-                {"일정": "2024년 6월 16일 (일) \n09:20",
-                 "접수기간": "2024년 4월 29일 (월) \n~ 2024년 6월 10일 (월)",
-                 "성적발표": "2024년 6월 25일 (화) \n09:20"},
-            ]
+            self.ExamDBModel = ExamDBModel()
+            self.exam_info =  self.ExamDBModel.get_exam_info()
 
         def get_exam_info(self):
             return self.exam_info
