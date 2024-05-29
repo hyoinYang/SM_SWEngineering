@@ -173,7 +173,7 @@ def btn1_page(): # 단어장 버튼
 
     btn4_fm = tk.Frame(main_fm)
     btn4_fm.pack(fill=tk.BOTH, expand=True)
-    dictionarymaincontroller = pb.DictionaryMainController(btn4_fm,pb.partmodel)
+    dictionarymaincontroller = pb.DictionaryMainController(btn4_fm,pb.partmodel,speakword)
     dictionarymaincontroller.init()
 
 def btn2_page(): # "단어테스트" 버튼
@@ -229,7 +229,7 @@ def admin_function(): # "관리자 전용 기능" 버튼
     adminmaincontroller = management.ManagementController(admin_fm)
     return adminmaincontroller
 
-
+speakword = SpeakWord()
 main_fm = tk.Canvas(root)
 
 main_fm.pack(fill=tk.BOTH, expand=True)

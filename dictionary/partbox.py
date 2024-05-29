@@ -58,11 +58,11 @@ class DictionaryModel:
 
 # 단어장 메인 
 class DictionaryMainController:
-    def __init__(self,root,partmodel):
+    def __init__(self,root,partmodel,speakmodel):
         self.root = root
         # 단어장 db 생성, 단어리스트, 예문 리스트, 배운 단어 개수, 오답노트, 배운 단어 리스트(이미 배운 단어를 가리기 위해)
         self.dictionary_db = partmodel
-        self.speak_word_model = SpeakWord() # 단어 발음 구현 클래스 생성
+        self.speak_word_model = speakmodel # 단어 발음 구현 클래스 생성
 
     
     # 위 함수 전부 호출
