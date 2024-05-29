@@ -216,12 +216,6 @@ class WordView:
     def get_input(self, prompt):
         return input(prompt)
 
-    def display_question(self, sentence, meaning, choices):
-        print("\n문장:", sentence)
-        print("뜻:", meaning)
-        for i, choice in enumerate(choices):
-            print(f"{i+1}. {choice}")
-
     def get_user_choice(self):
         return input("정답을 선택하세요 (1~4, 종료하려면 'exit' 입력): ").strip()
 
@@ -250,8 +244,9 @@ class WordView:
         print("\n공부한 단어 목록:")
         self.display_word_list(words)
 
-    def display_question(self, sentence, meaning, choices):
-        print("\n문장:", sentence)
+    def display_question(self, word, sentence, meaning, choices):
+        sentence_with_blank = sentence.replace(word, "_____")
+        print("\n문장:", sentence_with_blank)
         print("뜻:", meaning)
         for i, choice in enumerate(choices):
             print(f"{i+1}. {choice}")
@@ -324,7 +319,7 @@ class WordController:
             random.shuffle(words)
             for word in words:
                 choices = self.model.get_random_choices(word[0], part)
-                self.view.display_question(word[2], word[3], choices)
+                self.view.display_question(word[0], word[2], word[3], choices)
                 user_choice = self.view.get_user_choice()
                 if user_choice.lower() == 'exit':
                     break
