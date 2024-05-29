@@ -10,17 +10,20 @@ from login import LoginController
 import partbox as pb
 
 def switch(indicator_lb, parent_frame, page):
-
+    print("switch")
     for child in parent_frame.winfo_children():
+        print("child: ",child)
         if isinstance(child, tk.Label):
             child['bg']='#838383'
 
     indicator_lb['bg']='black'
-
+    
     for fm in main_fm.winfo_children():
+        print("반복문2")
         fm.destroy()
         root.update()
 
+    print("page(root)")
     page(root)
 
 # 사용자가 관리자인지 여부를 저장하는 변수
@@ -45,7 +48,7 @@ def toggle_menu():
     canvas1.pack()
     canvas1.create_line(0, 0, 300, 0, fill='gray')
 
-    toggle_btn2 = tk.Button(toggle_menu_fm, text='단어 테스트', font=('Helvetica', 15, 'bold'), bd=0, bg='#838383', fg='black', activebackground='#838383', activeforeground='black', cursor='hand2', command=lambda: switch(indicator_lb=toggle_btn2_indicator_lb, parent_frame=toggle_menu_fm, page=btn2_page(root)))
+    toggle_btn2 = tk.Button(toggle_menu_fm, text='단어 테스트', font=('Helvetica', 15, 'bold'), bd=0, bg='#838383', fg='black', activebackground='#838383', activeforeground='black', cursor='hand2', command=lambda: switch(indicator_lb=toggle_btn2_indicator_lb, parent_frame=toggle_menu_fm, page=btn2_page()))
     toggle_btn2.pack(anchor='center')
 
     toggle_btn2_indicator_lb = tk.Label(toggle_menu_fm, bg='#838383')
@@ -127,14 +130,12 @@ def toggle_menu():
     toggle_btn.config(command=collapse_toggle_menu)
 
 
-def btn1_page(frame):
-    return lambda test:LoginController(frame)
+def btn1_page(root):
+    return lambda test:LoginController(root)
 
-
-def btn2_page(frame):
-    #return lambda test:DictionaryMainController(root,)
-    pass
-
+def btn2_page():
+    dictionarymaincontroller.init()
+    
 def btn3_page():
     btn3_fm=tk.Frame(main_fm)
 
@@ -188,6 +189,7 @@ main_fm = tk.Frame(canvas)
 root.geometry('700x550')
 root.title('토익 단어장')
 root.configure(background="#FFFFFF")
+dictionarymaincontroller = pb.DictionaryMainController(root,pb.partmodel)
 
 head_frame = tk.Frame(root, bg='#838383', 
                       highlightbackground='white', highlightthickness=1)
@@ -207,5 +209,4 @@ head_frame.configure(height=50)
 main_fm.pack(fill=tk.BOTH, expand=True)
 
 btn1_page(main_fm)
-
 root.mainloop()
