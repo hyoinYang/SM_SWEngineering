@@ -439,7 +439,10 @@ def btn1_page():
 """
 
 
-def btn2_page():   
+def btn2_page():
+    btn4_fm = tk.Frame(main_fm)
+    btn4_fm.pack(fill=tk.BOTH, expand=True)
+    dictionarymaincontroller = pb.DictionaryMainController(btn4_fm,pb.partmodel)
     dictionarymaincontroller.init()
 
 def btn3_page():
@@ -589,6 +592,7 @@ def btn5_page():
     # Create an instance of the controller to link the model and the view
     controller = EtsPlaceController(btn5_fm)
 
+
     btn5_fm.pack(fill=tk.BOTH, expand=True)
 
 
@@ -615,7 +619,6 @@ main_fm = tk.Canvas(root)
 
 main_fm.pack(fill=tk.BOTH, expand=True)
 
-dictionarymaincontroller = pb.DictionaryMainController(root,pb.partmodel)
 btn1_page()
 
 root.mainloop()
