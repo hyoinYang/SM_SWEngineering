@@ -30,13 +30,12 @@ def toggle_menu():
 
     def collapse_toggle_menu():
         toggle_menu_fm.destroy()
-        toggle_btn.config(text='≡')
-        toggle_btn.config(command=toggle_menu)
+        #toggle_btn.config(text='≡')
+        #toggle_btn.config(command=toggle_menu)
 
     toggle_menu_fm = tk.Frame(root, bg='#838383')
 
     toggle_btn1 = tk.Button(toggle_menu_fm, text='단어장', font=('Helvetica', 15, 'bold'), bd=0, bg='#838383', fg='black', activebackground='#838383', activeforeground='black', cursor='hand2', command=lambda: switch(indicator_lb=toggle_btn1_indicator_lb, parent_frame=toggle_menu_fm, page=btn1_page(root))) 
-    #toggle_btn1 = tk.Button(toggle_menu_fm, text='단어장', font=('Helvetica', 15, 'bold'), bd=0, bg='#838383', fg='black', activebackground='#838383', activeforeground='black', cursor='hand2', command=lambda: switch(indicator_lb=toggle_btn1_indicator_lb, parent_frame=toggle_menu_fm, page=lambda:LoginController(root)))
     toggle_btn1.pack(anchor='center')
 
     toggle_btn1_indicator_lb = tk.Label(toggle_menu_fm, bg='#838383')

@@ -1,3 +1,4 @@
+import sidebar as bar
 import tkinter as tk
 from tkinter import ttk, messagebox
 
@@ -25,38 +26,40 @@ class TestView:
     # UI 생성 코드
     def setup_ui(self):
         
-        # 기존 윈도우 내용 삭제
-        for widget in self.root.winfo_children():
-            widget.destroy()
+        """        # 기존 윈도우 내용 삭제
+                for widget in self.root.winfo_children():
+                    widget.destroy()"""
+        
+        bar.toggle_menu()
 
-        style = ttk.Style()
-        style.theme_use('clam')  # 스타일 테마 선택 (Tkinter의 기본 테마 중 하나)
+        """style = ttk.Style()
+            style.theme_use('clam')  # 스타일 테마 선택 (Tkinter의 기본 테마 중 하나)
 
-        # 회색 바 스타일 설정
-        style.configure('TFrame', background='#838383')  # 스타일에 색상을 지정합니다.
+            # 회색 바 스타일 설정
+            style.configure('TFrame', background='#838383')  # 스타일에 색상을 지정합니다.
 
-        # 회색 바 프레임
-        title_bar_frame = ttk.Frame(self.root, style='TFrame', height=30)
-        title_bar_frame.pack(fill='x')
-        title_bar_frame.pack(pady=10)
+            # 회색 바 프레임
+            title_bar_frame = ttk.Frame(self.root, style='TFrame', height=30)
+            title_bar_frame.pack(fill='x')
+            title_bar_frame.pack(pady=10)
 
-        # 회색바 꾸미기: 톱니바퀴 이미지 넣기
-        gear_icon = tk.PhotoImage(file="resource/gear_icon.png").subsample(10)
-        gear_button = tk.Label(title_bar_frame, image=gear_icon, relief="flat", bd=0, bg="#838383", cursor="hand2")
-        gear_button.image = gear_icon
-        gear_button.pack(side="left", padx=5)
+            # 회색바 꾸미기: 톱니바퀴 이미지 넣기
+            gear_icon = tk.PhotoImage(file="resource/gear_icon.png").subsample(10)
+            gear_button = tk.Label(title_bar_frame, image=gear_icon, relief="flat", bd=0, bg="#838383", cursor="hand2")
+            gear_button.image = gear_icon
+            gear_button.pack(side="left", padx=5)
 
-        # 회색바 꾸미기: "토익단어" 글씨 넣기
-        text_label = tk.Label(title_bar_frame, text="토익단어", font=("Helvetica", 15), bg="#838383", cursor="hand2")
-        text_label.pack(side="left", padx=5)
+            # 회색바 꾸미기: "토익단어" 글씨 넣기
+            text_label = tk.Label(title_bar_frame, text="토익단어", font=("Helvetica", 15), bg="#838383", cursor="hand2")
+            text_label.pack(side="left", padx=5)
 
-        # 회색바 꾸미기: 사이드바 버튼 넣기
-        sidebar_icon = tk.PhotoImage(file="resource/sidebar_icon.png").subsample(10)
+            # 회색바 꾸미기: 사이드바 버튼 넣기
+            sidebar_icon = tk.PhotoImage(file="resource/sidebar_icon.png").subsample(10)
 
-        sidebar_button = tk.Button(title_bar_frame, image=sidebar_icon, relief="flat", bd=0, command=lambda:TestView.validate_sidebar(self), bg="#838383", cursor="hand2")
-        sidebar_button.image = gear_icon  # 이미지가 garbage-collected 되는 것을 방지
-        sidebar_button.pack(side="right", padx=5)
-
+            sidebar_button = tk.Button(title_bar_frame, image=sidebar_icon, relief="flat", bd=0, command=lambda:TestView.validate_sidebar(self), bg="#838383", cursor="hand2")
+            sidebar_button.image = gear_icon  # 이미지가 garbage-collected 되는 것을 방지
+            sidebar_button.pack(side="right", padx=5)
+        """
         # 콤보박스 생성
         part_combo_box = ttk.Combobox(self.root, values=TestModel.combo_values)
         part_combo_box.pack(padx=5)
