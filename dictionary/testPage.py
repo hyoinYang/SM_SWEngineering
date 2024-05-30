@@ -5,32 +5,66 @@ import partbox as pb
 import math
 
 # ----------------------------- Model -----------------------------
+import math
+
 class TestModel:
     combo_values = []
-    
-    # 문제들을 담는 배열입니다.
-    questions = ["test", "ttt"]
-    question_num = 2
+    questions = []
+    question_num = math.ceil(len(pb.partmodel.dictionary) / 30)
+    start_idx = 0
 
-    for part_index in range(0, math.ceil(pb.partmodel.word_cnt/30)): # part 개수 계산
-        combo_values.append("PART " + str(part_index+1))
+    def __init__(self):
+        part_size = 30
+        total_words = len(pb.partmodel.dictionary)
+        num_parts = math.ceil(total_words / part_size)
+        for part_index in range(num_parts):
+            start_index = part_index * part_size
+            end_index = min((part_index + 1) * part_size, total_words)
+            part_questions = pb.partmodel.dictionary[start_index:end_index]
+            self.questions.extend(part_questions)
+            self.combo_values.append("PART " + str(part_index + 1))
 
+    @staticmethod
+    def select_part(event):
+        part = event.widget.get()  # 선택된 파트
+        print(part)
+        # 선택된 파트에 해당하는 인덱스 계산
+        part_index = int(part.split()[1]) - 1  # "PART X"에서 X에 해당하는 부분 추출하여 인덱스로 변환
+        part_size = 30
+        total_words = len(pb.partmodel.dictionary)
+        start_index = part_index * part_size
+        TestModel.start_idx = start_index
+        end_index = min((part_index + 1) * part_size, total_words)
 
-    def __init__(self, root):
-        self.root = root
+        TestModel.questions.clear()
+
+        # 선택된 파트에 해당하는 단어들을 questions 리스트에 추가
+        """for dict in range(start_index, end_index):
+            TestModel.questions.append = pb.partmodel.dictionary[dict]
+        """
+        TestModel.questions = pb.partmodel.dictionary[start_index:end_index]
+
+        print(TestModel.start_idx)
+        for q in TestModel.questions:
+            print(q)
+
+        # 선택된 파트에 따라 question_num 재설정
+        TestModel.question_num = min(end_index - start_index, 30)
 
 # ----------------------------- View -----------------------------
 class TestView:
-    def __init__(self, root):
+    def __init__(self, root, test_model):
         self.root = root
+        self.test_model = test_model
+        self.green_boxes = []  # 초록색 박스 저장 리스트
         self.setup_ui()
 
     # UI 생성 코드
     def setup_ui(self):
         # 콤보박스 생성
-        part_combo_box = ttk.Combobox(self.root, values=TestModel.combo_values)
+        part_combo_box = ttk.Combobox(self.root, values=self.test_model.combo_values)
         part_combo_box.pack(padx=5)
-        part_combo_box.bind("<<ComboboxSelected>>", TestController.select_part)
+        part_combo_box.bind("<<ComboboxSelected>>", lambda e: self.test_model.select_part(e))
 
         # Canvas 생성
         canvas = tk.Canvas(self.root)
@@ -50,28 +84,26 @@ class TestView:
         # 내부 프레임의 사이즈 변경 시 Canvas 업데이트
         frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
 
-        idx = 0
         # 문제 개수와 문제에 맞는 박스(초록색) 생성
-        for i in range(TestModel.question_num):
-            text = TestModel.questions[idx]
-            TestView.create_scrollable_text(frame, i, text)
-            idx=idx+1
+        for i in range(self.test_model.question_num):
+            question = self.test_model.questions[i]
+            green_box = self.create_scrollable_text(frame, i + self.test_model.start_idx, question)
+            self.green_boxes.append(green_box)  # 초록색 박스 추가
 
         # 윈도우 실행
-        self.root.mainloop
+        self.root.mainloop()
 
-
-    # 사이드바 클릭시 로직
-    def validate_sidebar(current_window):
-        #open_sidebar_window(current_window)
-        current_window.destroy()
-
-    def create_scrollable_text(parent_frame, question_num, text):
-        def handle_enter(event):
-            # 입력 상자에서 엔터 키를 눌렀을 때의 동작
+    # 초록색 박스 생성 함수
+    def create_scrollable_text(self, parent_frame, question_num, text):
+        def handle_enter(event):  # 입력 상자에서 엔터 키를 눌렀을 때의 동작
             user_input = input_box.get()  # 입력 상자에서 입력된 내용 가져오기
             print("User input:", user_input)  # 입력된 내용을 터미널에 출력하기
             input_box.delete(0, "end")  # 입력 상자 초기화
+
+            if user_input == "correct":  # 입력값이 정답과 동일하다면, 입력상자를 O로 초기화
+                input_box.insert(0, "O")
+            else:
+                input_box.insert(0, "X")
 
         # 초록색 박스 생성
         green_box = tk.Frame(parent_frame, bg="white")
@@ -96,25 +128,29 @@ class TestView:
         input_box.pack(side="top", fill="x", padx=20, pady=10)
         input_box.bind("<Return>", handle_enter)  # Enter 키에 대한 이벤트 핸들러 바인딩
 
+        return green_box
+
+    # 문제 갱신 함수
+    def update_questions(self):
+        for i, question in enumerate(self.test_model.questions):
+            # 초록색 박스의 텍스트 업데이트
+            text_box = self.green_boxes[i].children['text_box']  # children을 사용하여 text_box 참조 얻기
+            text_box.config(state="normal")
+            text_box.delete("1.0", tk.END)
+            text_box.insert(tk.END, question)
+            text_box.config(state="disabled")
+
 # ----------------------------- Controller -----------------------------
 class TestController:
-    def __init__(self, root, partmodel):
-        self.model = TestModel
-        self.view = TestView(root)
-        self.partmodel = partmodel
+    def __init__(self, root):
+        self.model = TestModel()
+        self.view = TestView(root, self.model)
+        #self.partmodel = partmodel
 
     def open_testPage_window(self):
-        self.view.open_testPage_window()
-
-    # 콤보박스 선택에 맞춰서 문제들을 셋팅하는 함수입니다.
-    # 세팅방법은 임의로 정했습니다. 원래라면 데이터베이스에서 찾아와야 합니다.
-    # 데이터베이스에 연결시: Model 내 questions를 수정해야 합니다. (questions를 Model 내에서 그대로 출력합니다.)
-    def select_part(event):
-        part = event.widget.get()
-        print(part)
+        pass
+    
         
-        if (part == "PART 1"):
-            selected_questions=TestModel.questions[0]
         
     
 """
