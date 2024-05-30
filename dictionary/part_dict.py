@@ -1,5 +1,6 @@
 import tkinter as tk
-from speak_word import SpeakWord
+from tkinter import messagebox
+
 import random
 import sys, os
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
@@ -188,8 +189,9 @@ class PartDictController:
         favorites_button.after(1000,lambda:favorites_button.config(bg="SystemButtonFace"))
         word = self.model.word_texts[word_index].get("1.0",tk.END).replace("\n","")
         #sentence = self.model.sentence_texts[word_index].get("1.0",tk.END)
-        if word in self.model.dictionary_db.wrong_word_texts:
-            print("이미 있음")
+        self.model.dictionary_db.wrong_word_texts
+        if word in self.model.dictionary_db.wrong_word_texts: # 중복 처리가 안 됨...
+            messagebox.showinfo("단어장",f"{word}는 이미 즐겨찾기 목록에 있습니다 !")
             return
         # ### mysql 디비추가함
         WordDB.add_bookmark_by_userName(username, word)
@@ -206,7 +208,7 @@ class PartDictController:
         check_button.after(1000,lambda:check_button.config(bg="SystemButtonFace"))
         word = self.model.word_texts[word_index].get("1.0",tk.END).replace("\n","") # 학습률 버튼을 누른 단어 가져오기
         if word in self.model.dictionary_db.learned_word_texts: # 이미 배운 단어인지 확인
-            print("이미 있음")
+            messagebox.showinfo("단어장",f"{word}는 이미 학습한 단어 입니다 !")
             return
         self.model.dictionary_db.learned_word_list[self.model.part_index]+=1 # 특정 파트에 배운 단어 개수 추가
         self.model.dictionary_db.learned_word_texts.append(word) # 배운 단어라고 기억하기

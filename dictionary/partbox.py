@@ -151,4 +151,3 @@ partmodel = DictionaryModel(dictionary,sentence,learned_word_list,wrong_word_tex
 # root = tk.Tk()
 # dictionarymaincontroller = pb.DictionaryMainController(root,pb.partmodel)
 # dictionarymaincontroller.init()
-
