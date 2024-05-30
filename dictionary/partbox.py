@@ -57,9 +57,12 @@ class DictionaryModel:
         self.dictionary = dictionary # 모든 단어
         self.word_cnt = len(self.dictionary) # 모든 단어 개수
         self.sentence = sentence # 모든 예문
-        self.wrong_word_texts = wrong_word_texts # 오답노트 데이터 
+        self.wrong_word_texts = wrong_word_texts # 오답노트 단어
+        self.wrong_sentence = [] # 오답노트 예문
         self.learned_word_texts = learned_word_texts # 이미 배운 단어 데이터
 
+        self.wrong_word_class = [] # 흰색 프레임에 들어가는 텍스트 클래스
+        self.wrong_sentence_class = [] # 초록색 프레임에 들어가는 텍스트 클래스 ( 예문 )
 # 단어장 메인 
 class DictionaryMainController:
     def __init__(self,root,canvas, partmodel,speakmodel):

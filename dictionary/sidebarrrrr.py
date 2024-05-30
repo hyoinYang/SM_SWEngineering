@@ -15,6 +15,7 @@ from speak_word import SpeakWord
 import random
 from part_dict import PartDictController
 from part_dict import PartDictModel
+from answer_note import AnswerNoteController
 from titlebar import TitleView
 import math
 from tkinter.ttk import Progressbar, Label
@@ -186,8 +187,12 @@ def btn2_page():
     btn3_fm.pack(fill=tk.BOTH, expand=True)
     testPageController = tp.TestController(btn3_fm)
 
-def btn3_page():
-    pass
+# 오답 노트
+def btn3_page(): 
+    btn2_fm = tk.Frame(main_fm)
+    btn2_fm.pack(fill=tk.BOTH,expand=True)
+    answernotecontroller = AnswerNoteController(btn2_fm,pb.partmodel,speakword)
+    answernotecontroller.part_event()
 
 ##########################################################################
 def btn4_page():
