@@ -2,6 +2,9 @@ from titlebar import TitleView
 import tkinter as tk
 from tkinter import ttk, messagebox
 from findPassword import Controller as FindController
+import sys, os
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+from userClass import UserModel
 
 # ----------------------------- Model -----------------------------
 class FindModel:
@@ -15,8 +18,19 @@ class FindModel:
 
         fs.Controller(root)
 
-    def validate_find_id(self):
-        messagebox.showinfo("아이디 찾기", "아이디는 ####입니다.")
+    def validate_find_id(name_entry, birth_entry):
+        username = name_entry.get()
+        birth = birth_entry.get()
+        usermodel = UserModel()
+        result = usermodel.find_id_by_name_dob(username, birth)
+        if (result):
+            messagebox.showinfo("아이디:", f"아이디는 {result}입니다.")
+        else:
+            messagebox.showinfo("아이디 찾기", "존재하지 않는 정보입니다.")
+
+
+    def get_password(self):
+        return self.password_entry.get()
 
 # ----------------------------- View -----------------------------
 class FindView:
@@ -41,17 +55,18 @@ class FindView:
         birth_frame = tk.Frame(self.root, relief="solid", borderwidth=1, highlightbackground="gray", highlightcolor="gray")
         birth_frame.pack(pady=10)
 
-        email_icon = tk.PhotoImage(file="resource/email_entry.png").subsample(24)
-        self.email_label = tk.Label(birth_frame, image=email_icon, relief="flat", bd=0)
-        self.email_label.image = email_icon
-        self.email_label.pack(side="left", padx=5)
-        self.email_entry = tk.Entry(birth_frame, relief="flat", bg="#F0F0F0")
-        self.email_entry.pack(side="left", padx=5)
-        self.email_entry.insert(0, "생년월일")
+        birth_icon = tk.PhotoImage(file="resource/email_entry.png").subsample(24)
+        self.birth_label = tk.Label(birth_frame, image=birth_icon, relief="flat", bd=0)
+        self.birth_label.image = birth_icon
+        self.birth_label.pack(side="left", padx=5)
+        self.birth_entry = tk.Entry(birth_frame, relief="flat", bg="#F0F0F0")
+        self.birth_entry.pack(side="left", padx=5)
+        self.birth_entry.bind("<Return>", lambda e:FindModel.check_id(self.name_entry, self.birth_entry))
+        self.birth_entry.insert(0, "생년월일")
 
         # 아이디 찾기 버튼
         find_id_icon = tk.PhotoImage(file="resource/signup_btn.png").subsample(2)
-        find_id_button = tk.Button(self.root, text="                 아이디 찾기                 ", bg="#838383", relief="flat", bd=0, command=lambda:FindModel.validate_find_id(self), cursor="hand2")
+        find_id_button = tk.Button(self.root, text="                 아이디 찾기                 ", bg="#838383", relief="flat", bd=0, command=lambda:FindModel.validate_find_id(self.name_entry, self.birth_entry), cursor="hand2")
         find_id_button.image = find_id_icon
 
         find_id_button.pack(pady=10)
@@ -62,12 +77,6 @@ class FindView:
         find_password_button.image = find_password_icon
 
         find_password_button.pack(pady=10)
-
-    def get_username(self):
-        return self.username_entry.get()
-
-    def get_password(self):
-        return self.password_entry.get()
 
 
 # ----------------------------- Controller -----------------------------

@@ -23,6 +23,7 @@ import sys, os
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from examInfoClass import ExamDBModel
 
+
 root = tk.Tk()
 root.geometry('700x550')
 root.title('토익 단어장')
@@ -116,7 +117,7 @@ def toggle_menu():
     canvas6.place(x=0, y=440)
     canvas6.create_line(0, 0, 300, 0, fill='gray')
 
-    toggle_btn7 = tk.Button(toggle_menu_fm, text='로그아웃', font=('Helvetica', 15, 'bold'), bd=0, bg='#838383', fg='black', activebackground='#838383', activeforeground='black', cursor='hand2', command=lambda: switch(indicator_lb=toggle_btn7_indicator_lb, parent_frame=toggle_menu_fm, page=btn7_page(root)))
+    toggle_btn7 = tk.Button(toggle_menu_fm, text='로그아웃', font=('Helvetica', 15, 'bold'), bd=0, bg='#838383', fg='black', activebackground='#838383', activeforeground='black', cursor='hand2', command=lambda: switch(indicator_lb=toggle_btn7_indicator_lb, parent_frame=toggle_menu_fm, page=btn7_page))
     toggle_btn7.place(x=100, y=440)
 
     toggle_btn7_indicator_lb = tk.Label(toggle_menu_fm, bg='#838383')
@@ -132,7 +133,7 @@ def toggle_menu():
         canvas8.place(x=0, y=390)
         canvas8.create_line(0, 0, 300, 0, fill='gray')
 
-        toggle_btn8 = tk.Button(toggle_menu_fm, text='관리자 전용 기능', font=('Helvetica', 15, 'bold'), bd=0, bg='#838383', fg='black', activebackground='#838383', activeforeground='black', cursor='hand2', command=lambda:admin_function(root))
+        toggle_btn8 = tk.Button(toggle_menu_fm, text='관리자 전용 기능', font=('Helvetica', 15, 'bold'), bd=0, bg='#838383', fg='black', activebackground='#838383', activeforeground='black', cursor='hand2', command=lambda:switch(indicator_lb=toggle_btn7_indicator_lb, parent_frame=toggle_menu_fm, page=admin_function))
         toggle_btn8.place(x=100, y=400)
 
     window_height = 700

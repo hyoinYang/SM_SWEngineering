@@ -2,14 +2,24 @@ from titlebar import TitleView
 import tkinter as tk
 from tkinter import ttk, messagebox
 from signup import SignupController
+import sys, os
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+from userClass import UserModel
 
 # ----------------------------- Model -----------------------------
 class LoginModel:
-    def validate_login(self, username, password):
-        if username == "admin" and password == "12345":
-            messagebox.showinfo("로그인", "%s님 환영합니다", username)
+    def validate_login(username_entry, password_entry):
+        usermodel = UserModel()
+        username = username_entry.get()
+        password = password_entry.get()
+        
+        if(usermodel.verify_user(username, password)):
+            usermodel.create_session(username)
+            messagebox.showinfo("로그인","환영합니다!")
+        
         else:
-            messagebox.showinfo("로그인", "누구세요?")
+            messagebox.showinfo("로그인", "가입기록이 없습니다.")
+
     
     def validate_signup(self, root):
         messagebox.showinfo("회원가입", "회원가입 창으로 이동합니다")
@@ -44,8 +54,8 @@ class LoginView:
         self.setup_ui()
 
     def setup_ui(self):
-        #title = TitleView(self.root, "로그인")
-        #title.init_title()
+        title = TitleView(self.root, "로그인")
+        title.init_title()
 
         # 사용자 이름 라벨 및 텍스트 상자
         username_frame = tk.Frame(self.root, relief="solid", borderwidth=1, highlightbackground="gray", highlightcolor="gray")
@@ -71,10 +81,11 @@ class LoginView:
         self.password_entry = tk.Entry(password_frame, relief="flat", bg="#F0F0F0")
         self.password_entry.pack(side="left", padx=5)
         self.password_entry.insert(0, "password")
+        self.password_entry.bind("<Return>",lambda event: LoginModel.validate_login(self.username_entry, self.password_entry))
 
         # 로그인 버튼
         login_icon = tk.PhotoImage(file="resource/login_btn.png").subsample(2)
-        login_button = tk.Button(self.root, image=login_icon, relief="flat", bd=0, command=lambda:LoginModel.validate_login(self, "testid", "testpass"), cursor="hand2")
+        login_button = tk.Button(self.root, image=login_icon, relief="flat", bd=0, command=lambda: LoginModel.validate_login(self.username_entry, self.password_entry), cursor="hand2")
         login_button.image = login_icon
   
         login_button.pack(pady=20)
@@ -116,8 +127,9 @@ class LoginController:
         #self.bind_events()
 
     def validate_login(self):
-        username = self.view.get_username()
-        password = self.view.get_password()
+        username = LoginView.get_username()
+        password = LoginView.get_password()
+        print(username, ", ",password)
         if self.model.validate_login(username, password):
             self.view.show_login_success_message(username)
         else:
@@ -126,7 +138,7 @@ class LoginController:
     def handle_btn1_click(root):
         pass
 
-"""if __name__ == "__main__":
+if __name__ == "__main__":
     root = tk.Tk()
     app = LoginController(root)
     my_windows_width = root.winfo_screenwidth()
@@ -136,4 +148,4 @@ class LoginController:
     center_width = (my_windows_width/2)-(app_width/2)
     center_height = (my_windows_height/2)-(app_height/2)
     root.geometry(f"{app_width}x{app_height}+{int(center_width)}+{int(center_height)}")
-    root.mainloop()"""
+    root.mainloop()

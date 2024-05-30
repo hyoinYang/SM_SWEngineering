@@ -1,11 +1,36 @@
 from titlebar import TitleView
 import tkinter as tk
 from tkinter import ttk, messagebox
+import sys, os
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+from userClass import UserModel
+from datetime import datetime
 
 # ----------------------------- Model -----------------------------
 class SignupModel:
-    def validate_signup(self):
-        messagebox.showinfo("회원가입", "회원가입 완료")
+    def validate_signup(root, username_entry, password_entry, birth_entry, name_entry):
+        import login as loginPage
+        usermodel = UserModel()
+        
+        username = username_entry.get()
+        password = password_entry.get()
+        birth = birth_entry.get()
+        name = name_entry.get()
+        print(username, password, birth, name)
+        if (usermodel.check_duplicate_id(username)):
+            messagebox.showinfo("회원가입", "이 아이디는 사용되고 있습니다.")
+        else:
+            usermodel.register_member(username, password, name, birth)
+            messagebox.showinfo("회원가입", "회원가입 완료")
+            
+            for fm in root.winfo_children():
+                fm.destroy()
+                root.update()
+
+            login_fm=tk.Frame(root)
+            login_fm.pack(fill=tk.BOTH, expand=True)
+            controller = loginPage.LoginController(login_fm)
+
 
 # ----------------------------- View -----------------------------
 class SignupView:
@@ -52,21 +77,21 @@ class SignupView:
         self.name_entry.pack(side="left", padx=5)
         self.name_entry.insert(0, "이름")
 
-        # 이메일 라벨 및 텍스트 상자
-        email_frame = tk.Frame(self.root, relief="solid", borderwidth=1, highlightbackground="gray", highlightcolor="gray")
-        email_frame.pack(pady=10)
+        # 생년월일 라벨 및 텍스트 상자
+        birth_frame = tk.Frame(self.root, relief="solid", borderwidth=1, highlightbackground="gray", highlightcolor="gray")
+        birth_frame.pack(pady=10)
 
-        email_icon = tk.PhotoImage(file="resource/email_entry.png").subsample(24)
-        self.email_label = tk.Label(email_frame, image=email_icon, relief="flat", bd=0)
-        self.email_label.image = email_icon
-        self.email_label.pack(side="left", padx=5)
-        self.email_entry = tk.Entry(email_frame, relief="flat", bg="#F0F0F0")
-        self.email_entry.pack(side="left", padx=5)
-        self.email_entry.insert(0, "생년월일")
+        birth_icon = tk.PhotoImage(file="resource/email_entry.png").subsample(24)
+        self.birth_label = tk.Label(birth_frame, image=birth_icon, relief="flat", bd=0)
+        self.birth_label.image = birth_icon
+        self.birth_label.pack(side="left", padx=5)
+        self.birth_entry = tk.Entry(birth_frame, relief="flat", bg="#F0F0F0")
+        self.birth_entry.pack(side="left", padx=5)
+        self.birth_entry.insert(0, "생년월일")
 
         # 회원가입 버튼
         signup_icon = tk.PhotoImage(file="resource/signup_btn.png").subsample(2)
-        signup_button = tk.Button(self.root, image=signup_icon, relief="flat", bd=0, command=lambda:SignupModel.validate_signup(self), cursor="hand2")
+        signup_button = tk.Button(self.root, image=signup_icon, relief="flat", bd=0, command=lambda:SignupModel.validate_signup(self.root, self.username_entry, self.password_entry, self.birth_entry, self.name_entry), cursor="hand2")
         signup_button.image = signup_icon
 
         signup_button.pack(pady=10)

@@ -1,20 +1,23 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
+import part_dict as star
+import partbox as pb
+import math
 
 # ----------------------------- Model -----------------------------
 class TestModel:
-    question_num = 30
+    combo_values = []
     
-    # 임의로 3개만 만들어 뒀습니다.
-    combo_values = ["PART 1", "PART 2", "PART 3"]
-
     # 문제들을 담는 배열입니다.
-    questions = ["t","e","s","t","1","2","3","4","5","6", "t","e","s","t","1","2","3","4","5","6", "t","e","s","t","1","2","3","4","5","6"]
-    
+    questions = ["test", "ttt"]
+    question_num = 2
+
+    for part_index in range(0, math.ceil(pb.partmodel.word_cnt/30)): # part 개수 계산
+        combo_values.append("PART " + str(part_index+1))
+
+
     def __init__(self, root):
         self.root = root
-
-    
 
 # ----------------------------- View -----------------------------
 class TestView:
@@ -24,39 +27,6 @@ class TestView:
 
     # UI 생성 코드
     def setup_ui(self):
-        
-        """        # 기존 윈도우 내용 삭제
-                for widget in self.root.winfo_children():
-                    widget.destroy()"""
-
-        """style = ttk.Style()
-            style.theme_use('clam')  # 스타일 테마 선택 (Tkinter의 기본 테마 중 하나)
-
-            # 회색 바 스타일 설정
-            style.configure('TFrame', background='#838383')  # 스타일에 색상을 지정합니다.
-
-            # 회색 바 프레임
-            title_bar_frame = ttk.Frame(self.root, style='TFrame', height=30)
-            title_bar_frame.pack(fill='x')
-            title_bar_frame.pack(pady=10)
-
-            # 회색바 꾸미기: 톱니바퀴 이미지 넣기
-            gear_icon = tk.PhotoImage(file="resource/gear_icon.png").subsample(10)
-            gear_button = tk.Label(title_bar_frame, image=gear_icon, relief="flat", bd=0, bg="#838383", cursor="hand2")
-            gear_button.image = gear_icon
-            gear_button.pack(side="left", padx=5)
-
-            # 회색바 꾸미기: "토익단어" 글씨 넣기
-            text_label = tk.Label(title_bar_frame, text="토익단어", font=("Helvetica", 15), bg="#838383", cursor="hand2")
-            text_label.pack(side="left", padx=5)
-
-            # 회색바 꾸미기: 사이드바 버튼 넣기
-            sidebar_icon = tk.PhotoImage(file="resource/sidebar_icon.png").subsample(10)
-
-            sidebar_button = tk.Button(title_bar_frame, image=sidebar_icon, relief="flat", bd=0, command=lambda:TestView.validate_sidebar(self), bg="#838383", cursor="hand2")
-            sidebar_button.image = gear_icon  # 이미지가 garbage-collected 되는 것을 방지
-            sidebar_button.pack(side="right", padx=5)
-        """
         # 콤보박스 생성
         part_combo_box = ttk.Combobox(self.root, values=TestModel.combo_values)
         part_combo_box.pack(padx=5)
@@ -128,9 +98,10 @@ class TestView:
 
 # ----------------------------- Controller -----------------------------
 class TestController:
-    def __init__(self, root):
+    def __init__(self, root, partmodel):
         self.model = TestModel
         self.view = TestView(root)
+        self.partmodel = partmodel
 
     def open_testPage_window(self):
         self.view.open_testPage_window()
@@ -140,6 +111,8 @@ class TestController:
     # 데이터베이스에 연결시: Model 내 questions를 수정해야 합니다. (questions를 Model 내에서 그대로 출력합니다.)
     def select_part(event):
         part = event.widget.get()
+        print(part)
+        
         if (part == "PART 1"):
             selected_questions=TestModel.questions[0]
         
@@ -148,5 +121,4 @@ class TestController:
 if __name__ == "__main__":
     root = tk.Tk()
     app = TestController(root)
-    root.mainloop()
-"""
+    root.mainloop()"""

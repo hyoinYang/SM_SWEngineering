@@ -1,11 +1,24 @@
 from titlebar import TitleView
 import tkinter as tk
 from tkinter import ttk, messagebox
+import sys, os
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+from userClass import UserModel
 
 # ----------------------------- Model -----------------------------
 class Model:
-    def validate_find_password(self):
-        messagebox.showinfo("비밀번호 찾기", "비밀번호는 ####입니다.")
+    def validate_find_password(root, username_entry, birth_entry, name_entry):
+        username = username_entry.get()
+        birth = birth_entry.get()
+        name = name_entry.get()
+
+        usermodel = UserModel()
+        result = usermodel.find_password_by_id_name_dob(username, name, birth)
+        if (result):
+            messagebox.showinfo("비밀번호:", f"비밀번호 찾기는 {result}입니다.")
+        else:
+            messagebox.showinfo("비밀번호 찾기", "존재하지 않는 정보입니다.")
+
 
 # ----------------------------- View -----------------------------
 class View:
@@ -28,18 +41,6 @@ class View:
         self.username_entry.pack(side="left", padx=5)
         self.username_entry.insert(0, "Username")
 
-        # 비밀번호 라벨 및 텍스트 상자
-        password_frame = tk.Frame(self.root, relief="solid", borderwidth=1, highlightbackground="gray", highlightcolor="gray")
-        password_frame.pack(pady=10)
-
-        password_icon = tk.PhotoImage(file="resource/password_entry.png").subsample(37)
-        self.password_label = tk.Label(password_frame, image=password_icon, relief="flat", bd=0)
-        self.password_label.image = password_icon
-        self.password_label.pack(side="left", padx=5)
-        self.password_entry = tk.Entry(password_frame, relief="flat", bg="#F0F0F0")
-        self.password_entry.pack(side="left", padx=5)
-        self.password_entry.insert(0, "password")
-
         # 이름 라벨 및 텍스트 상자
         name_frame = tk.Frame(self.root, relief="solid", borderwidth=1, highlightbackground="gray", highlightcolor="gray")
         name_frame.pack(pady=10)
@@ -52,21 +53,21 @@ class View:
         self.name_entry.pack(side="left", padx=5)
         self.name_entry.insert(0, "이름")
 
-        # 이메일 라벨 및 텍스트 상자
-        email_frame = tk.Frame(self.root, relief="solid", borderwidth=1, highlightbackground="gray", highlightcolor="gray")
-        email_frame.pack(pady=10)
+        # 생년월일 라벨 및 텍스트 상자
+        birth_frame = tk.Frame(self.root, relief="solid", borderwidth=1, highlightbackground="gray", highlightcolor="gray")
+        birth_frame.pack(pady=10)
 
-        email_icon = tk.PhotoImage(file="resource/email_entry.png").subsample(24)
-        self.email_label = tk.Label(email_frame, image=email_icon, relief="flat", bd=0)
-        self.email_label.image = email_icon
-        self.email_label.pack(side="left", padx=5)
-        self.email_entry = tk.Entry(email_frame, relief="flat", bg="#F0F0F0")
-        self.email_entry.pack(side="left", padx=5)
-        self.email_entry.insert(0, "생년월일")
+        birth_icon = tk.PhotoImage(file="resource/email_entry.png").subsample(24)
+        self.birth_label = tk.Label(birth_frame, image=birth_icon, relief="flat", bd=0)
+        self.birth_label.image = birth_icon
+        self.birth_label.pack(side="left", padx=5)
+        self.birth_entry = tk.Entry(birth_frame, relief="flat", bg="#F0F0F0")
+        self.birth_entry.pack(side="left", padx=5)
+        self.birth_entry.insert(0, "생년월일")
 
-        # 회원가입 버튼
+        # 비밀번호 찾기 버튼
         signup_icon = tk.PhotoImage(file="resource/signup_btn.png").subsample(2)
-        signup_button = tk.Button(self.root, text="                 비밀번호 찾기                 ", bg="#838383", relief="flat", bd=0, command=lambda:Model.validate_find_password(self), cursor="hand2")
+        signup_button = tk.Button(self.root, text="                 비밀번호 찾기                 ", bg="#838383", relief="flat", bd=0, command=lambda:Model.validate_find_password(self.root, self.username_entry, self.birth_entry, self.name_entry), cursor="hand2")
         signup_button.image = signup_icon
 
         signup_button.pack(pady=10)
