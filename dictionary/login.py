@@ -8,6 +8,7 @@ from userClass import UserModel
 
 # ----------------------------- Model -----------------------------
 class LoginModel:
+
     def validate_login(username_entry, password_entry):
         usermodel = UserModel()
         username = username_entry.get()
@@ -15,7 +16,13 @@ class LoginModel:
         
         if(usermodel.verify_user(username, password)):
             usermodel.create_session(username)
-            messagebox.showinfo("로그인","환영합니다!")
+
+            if (username == "admin" and password == "12345"):
+                messagebox.showinfo("로그인", "관리자 계정입니다.")
+                LoginController.is_admin = True
+            else:
+                messagebox.showinfo("로그인","환영합니다!")
+            LoginController.is_login = True
         
         else:
             messagebox.showinfo("로그인", "가입기록이 없습니다.")
@@ -54,8 +61,8 @@ class LoginView:
         self.setup_ui()
 
     def setup_ui(self):
-        title = TitleView(self.root, "로그인")
-        title.init_title()
+        #title = TitleView(self.root, "로그인")
+        #title.init_title()
 
         # 사용자 이름 라벨 및 텍스트 상자
         username_frame = tk.Frame(self.root, relief="solid", borderwidth=1, highlightbackground="gray", highlightcolor="gray")
@@ -121,6 +128,8 @@ class LoginView:
 
 # ----------------------------- Controller -----------------------------
 class LoginController:
+    is_login = False
+    is_admin = False
     def __init__(self, root):
         self.model = LoginModel()
         self.view = LoginView(root)
