@@ -1,6 +1,10 @@
 import tkinter as tk
 from speak_word import SpeakWord
 import random
+import sys, os
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+from wordClass import WordDBModel
+from login import LoginModel
 
 # 한 파트 단어의 db
 class PartDictModel:
@@ -177,17 +181,24 @@ class PartDictController:
 
     # 즐겨찾기 버튼 
     def favorites_button_click(self,favorites_button,word_index):
+        WordDB = WordDBModel()
+        Login = LoginModel()
+        username = Login.current_user
         favorites_button.config(bg="yellow")
         favorites_button.after(1000,lambda:favorites_button.config(bg="SystemButtonFace"))
         word = self.model.word_texts[word_index].get("1.0",tk.END).replace("\n","")
-        sentence = self.model.sentence_texts[word_index].get("1.0",tk.END)
+        #sentence = self.model.sentence_texts[word_index].get("1.0",tk.END)
         if word in self.model.dictionary_db.wrong_word_texts:
             print("이미 있음")
             return
-        self.model.dictionary_db.wrong_word_texts.append(word)
-        self.model.dictionary_db.wrong_sentence.append(sentence)
+        # ### mysql 디비추가함
+        WordDB.add_bookmark_by_userName(username, word)
 
-        print(f"오답노트에 {word},{sentence}가 추가되었습니다.")
+
+        # self.model.dictionary_db.wrong_word_texts.append(word)
+        # self.model.dictionary_db.wrong_sentence.append(sentence)
+
+        # print(f"오답노트에 {word},{sentence}가 추가되었습니다.")
 
     # 학습률 버튼
     def check_button_click(self,check_button,word_index):

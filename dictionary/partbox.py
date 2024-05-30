@@ -6,6 +6,7 @@ from part_dict import PartDictModel
 from titlebar import TitleView
 from speak_word import SpeakWord
 import math
+from login import LoginModel
 import sys, os
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from wordClass import WordDBModel
@@ -58,7 +59,7 @@ class DictionaryModel:
         self.word_cnt = len(self.dictionary) # 모든 단어 개수
         self.sentence = sentence # 모든 예문
         self.wrong_word_texts = wrong_word_texts # 오답노트 단어
-        self.wrong_sentence = [] # 오답노트 예문
+        self.wrong_sentence = wrong_sentence_texts # 오답노트 예문
         self.learned_word_texts = learned_word_texts # 이미 배운 단어 데이터
 
         self.wrong_word_class = [] # 흰색 프레임에 들어가는 텍스트 클래스
@@ -120,7 +121,27 @@ for i in range(len(eng_sen)):
     newsen = '\n'.join([kor_word[i],eng_sen[i], kor_sen[i]])
     sen_total.append(newsen)
 sentence = sen_total # 나중에 db에 있는 예문 넣기 ! , 임시로 sentence = dictionary로 했음
+
+loginModel = LoginModel()
+username = loginModel.current_user
+tuple_wrong_words = WordDB.get_all_bookmarks_word_by_userName(username)
+tuple_wrong_sentences = WordDB.get_all_bookmarks_sentence_by_userName(username)
+
+
+
 wrong_word_texts = [] # 오답노트에 들어가는 텍스트 문자( 단어 )
+wrong_sentence_texts = [] # 오답노트에 들어가는 텍스트 문자( 문장 )
+for word in tuple_wrong_words:
+    wrong_word_texts.append(word[0])
+for sen in tuple_wrong_sentences:
+    senList = list(sen)
+    newsen = '\n'.join(senList)
+    wrong_sentence_texts.append(newsen)
+
+print(wrong_word_texts)
+print(wrong_sentence_texts )
+
+
 learned_word_texts = [] # 배운 단어 리스트 ( 파트별로 구현할 필요 x )
 
 partmodel = DictionaryModel(dictionary,sentence,learned_word_list,wrong_word_texts,learned_word_texts)

@@ -10,7 +10,7 @@ from userClass import UserModel
 class WordDBModel:
     def __init__(self):
         self.conn = connect_to_database()
-        self.cursor = self.conn.cursor()
+        self.cursor = self.conn.cursor(buffered=True)
         
     # part 수 return
     def get_part(self):
@@ -194,7 +194,13 @@ class WordDBModel:
             self.cursor.execute(insert_query, val)
             self.conn.commit()
             return True
-
+    def add_bookmark_by_userName(self, mem_id, eng_word):
+        insert_query = "INSERT INTO Bookmark_words (eng_word, member_id) VALUES (%s, %s)"
+        val = (eng_word, mem_id)
+        self.cursor.execute(insert_query, val)
+        self.conn.commit()
+        return True
+    
     def get_all_bookmarks(self, mem_id):
         self.cursor.execute("SELECT user_id FROM sessions WHERE session_id=%s",(mem_id,))
         result = self.cursor.fetchone()
@@ -205,7 +211,24 @@ class WordDBModel:
             return self.cursor.fetchall()
         else:
             return []
-
+    def get_all_bookmarks_word_by_userName(self, mem_id):
+        sql1 = "select * from Bookmark_words where member_id = %s"
+        self.cursor.execute(sql1, (mem_id, ))
+        if(self.cursor.fetchone() is None):
+            return []
+        else:
+            sql2 = "SELECT w.eng_word FROM words w JOIN Bookmark_words bw ON w.eng_word = bw.eng_word WHERE bw.member_id = %s"
+            self.cursor.execute(sql2, (mem_id,))
+        return self.cursor.fetchall()
+    def get_all_bookmarks_sentence_by_userName(self, mem_id):
+        sql1 = "select * from Bookmark_words where member_id = %s"
+        self.cursor.execute(sql1, (mem_id, ))
+        if(self.cursor.fetchone() is None):
+            return []
+        else:
+            sql = "SELECT w.kor_word, w.example_sentence, w.kor_example_sentence FROM words w JOIN Bookmark_words bw ON w.eng_word = bw.eng_word WHERE bw.member_id = %s"
+            self.cursor.execute(sql, (mem_id,))
+            return self.cursor.fetchall()
     ####### STUDIED_WORDS #######
     def add_studied_word(self, mem_id, eng_word):
         self.cursor.execute("SELECT user_id FROM sessions WHERE session_id=%s",(mem_id,))

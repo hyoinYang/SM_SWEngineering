@@ -2,18 +2,14 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
 
+import sys, os
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+from examInfoClass import ExamDBModel
+
+
 class TOEICScheduleModel:
-    exam_info = [
-                {"일정": "2024년 4월 14일 (일) \n09:20",
-                "접수기간": "2024년 2월 26일 (월) \n~ 2024년 4월 1일 (월)",
-                "성적발표": "2024년 4월 24일 (수) \n12:00"},
-                {"일정": "2024년 5월 19일 (일) \n09:20",
-                "접수기간": "2024년 3월 25일 (월) \n~ 2024년 5월 13일 (월)",
-                "성적발표": "2024년 5월 28일 (화) \n09:20"},
-                {"일정": "2024년 6월 16일 (일) \n09:20",
-                "접수기간": "2024년 4월 29일 (월) \n~ 2024년 6월 10일 (월)",
-                "성적발표": "2024년 6월 25일 (화) \n09:20"},
-            ]
+    examDB=ExamDBModel()
+    exam_info=examDB.get_exam_info()
 
     def __init__(self):
         pass

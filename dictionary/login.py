@@ -8,22 +8,24 @@ from userClass import UserModel
 
 # ----------------------------- Model -----------------------------
 class LoginModel:
+    current_user = None  # 현재 로그인한 사용자 이름을 저장할 변수
 
+    @staticmethod
     def validate_login(username_entry, password_entry):
         usermodel = UserModel()
         username = username_entry.get()
         password = password_entry.get()
-        
-        if(usermodel.verify_user(username, password)):
-            usermodel.create_session(username)
 
-            if (username == "admin" and password == "12345"):
+        if usermodel.verify_user(username, password):
+            usermodel.create_session(username)
+            LoginModel.current_user = username  # 로그인한 사용자 이름 저장
+
+            if username == "admin" and password == "12345":
                 messagebox.showinfo("로그인", "관리자 계정입니다.")
                 LoginController.is_admin = True
             else:
-                messagebox.showinfo("로그인","환영합니다!")
+                messagebox.showinfo("로그인", "환영합니다!")
             LoginController.is_login = True
-        
         else:
             messagebox.showinfo("로그인", "가입기록이 없습니다.")
 

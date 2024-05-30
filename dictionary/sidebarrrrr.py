@@ -19,7 +19,6 @@ from titlebar import TitleView
 from login import LoginController
 import math
 from tkinter.ttk import Progressbar, Label
-import partbox as pb
 import sys, os
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from examInfoClass import ExamDBModel
@@ -53,9 +52,10 @@ def toggle_menu():
         toggle_btn.config(command=toggle_menu)
 
     if (LoginController.is_login):
+        pb = module_partbox()
         toggle_menu_fm = tk.Frame(root, bg='#838383')
 
-        toggle_btn1 = tk.Button(toggle_menu_fm, text='단어장', font=('Helvetica', 15, 'bold'), bd=0, bg='#838383', fg='black', activebackground='#838383', activeforeground='black', cursor='hand2', command=lambda: switch(indicator_lb=toggle_btn1_indicator_lb, parent_frame=toggle_menu_fm, page=btn1_page))
+        toggle_btn1 = tk.Button(toggle_menu_fm, text='단어장', font=('Helvetica', 15, 'bold'), bd=0, bg='#838383', fg='black', activebackground='#838383', activeforeground='black', cursor='hand2', command=lambda: switch(indicator_lb=toggle_btn1_indicator_lb, parent_frame=toggle_menu_fm, page=lambda:btn1_page(pb)))
         toggle_btn1.pack(anchor='center')
 
         toggle_btn1_indicator_lb = tk.Label(toggle_menu_fm, bg='#838383')
@@ -75,7 +75,7 @@ def toggle_menu():
         canvas2.pack()
         canvas2.create_line(0, 0, 300, 0, fill='gray')
 
-        toggle_btn3 = tk.Button(toggle_menu_fm, text='오답노트', font=('Helvetica', 15, 'bold'), bd=0, bg='#838383', fg='black', activebackground='#838383', activeforeground='black', cursor='hand2', command=lambda: switch(indicator_lb=toggle_btn3_indicator_lb, parent_frame=toggle_menu_fm, page=btn3_page))
+        toggle_btn3 = tk.Button(toggle_menu_fm, text='오답노트', font=('Helvetica', 15, 'bold'), bd=0, bg='#838383', fg='black', activebackground='#838383', activeforeground='black', cursor='hand2', command=lambda: switch(indicator_lb=toggle_btn3_indicator_lb, parent_frame=toggle_menu_fm, page=lambda:btn3_page(pb)))
         toggle_btn3.pack(anchor='center')
 
         toggle_btn3_indicator_lb = tk.Label(toggle_menu_fm, bg='#838383')
@@ -162,7 +162,7 @@ head_frame.pack(side=tk.TOP, fill=tk.X)
 head_frame.pack_propagate(False)
 head_frame.configure(height=50)
 
-def btn1_page(): # 단어장 조회
+def btn1_page(pb): # 단어장 조회
     btn4_fm = tk.Frame(main_fm)
     btn4_fm.pack(fill=tk.BOTH, expand=True)
     dictionarymaincontroller = pb.DictionaryMainController(btn4_fm,main_fm,pb.partmodel,speakword)
@@ -176,7 +176,7 @@ def btn2_page(): # 단어 테스트 조회
     btn3_fm.pack(fill=tk.BOTH, expand=True)
     testPageController = tp.TestController(btn3_fm)
 
-def btn3_page(): # 오답노트 조회
+def btn3_page(pb): # 오답노트 조회
     from answer_note import AnswerNoteController
 
     btn2_fm = tk.Frame(main_fm)
@@ -216,6 +216,9 @@ def admin_function(): # "관리자 전용 기능" 버튼
     adminmaincontroller = management.ManagementController(admin_fm)
     return adminmaincontroller
 
+def module_partbox():
+    import partbox as pb
+    return pb
 speakword = SpeakWord()
 main_fm = tk.Canvas(root)
 
