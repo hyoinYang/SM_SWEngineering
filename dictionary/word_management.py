@@ -1,6 +1,10 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
+import sys, os
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+from wordClass import WordDBModel
+
 
 
 # ----------------------------- Model -----------------------------
@@ -12,57 +16,71 @@ class ManagementModel:
     def delete_enter(del_entry):
         # 입력 상자에서 입력된 내용 가져오기
         word = del_entry.get()
+        wordModel = WordDBModel()
         
         # 입력된 내용을 터미널에 출력하기
         if (word == "삭제할 단어"):
-            print("ERROR: 모든 단어 입력 X")
+            print("삭제 ERROR: 모든 단어 입력 X")
         else:
-            print("Delete input:", word) 
+            if(wordModel.check_word_exist(word)):
+                wordModel.delete_word(word)
+                messagebox.showinfo("단어 삭제", "삭제되었습니다.")
+
+            else:
+                messagebox.showinfo("단어 삭제", "존재하지 않는 단어입니다.")
 
             # 입력 상자 초기화
             del_entry.delete(0, "end")
             del_entry.insert(0, "삭제할 단어")
 
     # 수정하기
-    def modify_enter(modify_word_entry, modify_korean_entry, modify_ex_entry):
+    def modify_enter(modify_word_entry, modify_korean_entry):
         # 입력 상자에서 입력된 내용 가져오기
         word = modify_word_entry.get()
         korean=modify_korean_entry.get()
-        example = modify_ex_entry.get()
+        wordModel = WordDBModel()
+        
 
         # 입력된 내용을 터미널에 출력하기
-        if (word == "추가할 단어" or korean == "추가할 단어의 뜻" or example == "추가할 단어의 예문"):
-            print("ERROR: 모든 단어 입력 X")
+        if (word == "수정할 단어" or korean == "수정할 단어의 뜻"):
+            print("수정 ERROR: 모든 단어 입력 X")
         else:
-            print("Modify input) word = %s, korean = %s, example = %s", word, korean, example)
+            print("Modify input) word = ", word, "korean = ", korean)
+            if(wordModel.check_word_exist(word)):
+                wordModel.update_word(word, korean)
+                messagebox.showinfo("단어 수정", "수정되었습니다")
+            else:
+                messagebox.showinfo("단어 수정", "존재하지 않는 단어입니다.")
+
             # 입력 상자 초기화
             modify_word_entry.delete(0, "end")
             modify_word_entry.insert(0, "추가할 단어")
             modify_korean_entry.delete(0, "end")
             modify_korean_entry.insert(0, "추가할 단어의 뜻")
-            modify_ex_entry.delete(0, "end")
-            modify_ex_entry.insert(0, "추가할 단어의 예문")
 
 
     # 추가하기
-    def add_enter(add_word_entry, add_korean_entry, add_ex_entry):
+    def add_enter(add_word_entry, add_korean_entry):
         # 입력 상자에서 입력된 내용 가져오기
         word = add_word_entry.get()
         korean=add_korean_entry.get()
-        example = add_ex_entry.get()
+        wordModel = WordDBModel()
 
         # 입력된 내용을 터미널에 출력하기
-        if (word == "추가할 단어" or korean == "추가할 단어의 뜻" or example == "추가할 단어의 예문"):
-            print("ERROR: 모든 단어 입력 X")
+        if (word == "추가할 단어" or korean == "추가할 단어의 뜻"):
+            print("추가 ERROR: 모든 단어 입력 X")
         else:
-            print("Add input) word = %s, korean = %s, example = %s", word, korean, example)
+            if(wordModel.check_word_exist(word)):
+                messagebox.showinfo("단어 추가", "이미 존재하는 단어입니다.")
+            else:
+                wordModel.add_word(word, korean)
+                messagebox.showinfo("단어 추가", "추가되었습니다.")
+            
             # 입력 상자 초기화
             add_word_entry.delete(0, "end")
             add_word_entry.insert(0, "추가할 단어")
             add_korean_entry.delete(0, "end")
             add_korean_entry.insert(0, "추가할 단어의 뜻")
-            add_ex_entry.delete(0, "end")
-            add_ex_entry.insert(0, "추가할 단어의 예문")
 
 # ----------------------------- View -----------------------------
 class ManagementView:
@@ -101,7 +119,7 @@ class ManagementView:
         del_entry = tk.Entry(delete_box, bg="white", fg="black", bd=2, relief="flat")
         del_entry.insert(0, "삭제할 단어")
         del_entry.pack(padx=20, pady=10)
-        del_entry.bind("<Return>", ManagementModel.delete_enter(del_entry))
+        del_entry.bind("<Return>", lambda e:ManagementModel.delete_enter(del_entry))
 
         # 단어 추가 칸
         add_box = tk.Frame(frame, bg="gray")
@@ -113,17 +131,13 @@ class ManagementView:
         add_word_entry = tk.Entry(add_box, bg="white", fg="black", bd=2, relief="flat")
         add_word_entry.insert(0, "추가할 단어")
         add_word_entry.pack(side="left", padx=20, pady=10)
-        #add_word_entry.bind("<Return>", ManagementModel.add_enter(add_word_entry, add_korean_entry, add_ex_entry))
+        add_word_entry.bind("<Return>", lambda e:ManagementModel.add_enter(add_word_entry, add_korean_entry))
 
         add_korean_entry = tk.Entry(add_box, bg="white", fg="black", bd=2, relief="flat")
         add_korean_entry.insert(0, "추가할 단어의 뜻")
         add_korean_entry.pack(side="left", fill="x", padx=20, pady=10)
+        add_korean_entry.bind("<Return>", lambda e:ManagementModel.add_enter(add_word_entry, add_korean_entry))
         #add_korean_entry.bind("<Return>", ManagementModel.add_enter(add_word_entry, add_korean_entry, add_ex_entry))
-
-        add_ex_entry = tk.Entry(add_box, bg="white", fg="black", bd=2, relief="flat")
-        add_ex_entry.insert(0, "추가할 단어의 예문")
-        add_ex_entry.pack(side="left", fill="x", padx=20, pady=10)
-        add_ex_entry.bind("<Return>", ManagementModel.add_enter(add_word_entry, add_korean_entry, add_ex_entry))
 
         # 단어 수정 칸
         modify_box = tk.Frame(frame, bg="gray")
@@ -136,18 +150,14 @@ class ManagementView:
         modify_word_entry = tk.Entry(modify_box, bg="white", fg="black", bd=2, relief="flat")
         modify_word_entry.pack(side="left", fill="x", padx=20, pady=10)
         modify_word_entry.insert(0, "수정할 단어")
-        #modify_word_entry.bind("<Return>", ManagementModel.modify_enter(modify_word_entry, modify_korean_entry, modify_ex_entry))
+        modify_word_entry.bind("<Return>", lambda e:ManagementModel.modify_enter(modify_word_entry, modify_korean_entry))
 
         # 입력 상자(수정할 내용) 생성
         modify_korean_entry = tk.Entry(modify_box, bg="white", fg="black", bd=2, relief="flat")
         modify_korean_entry.pack(side="left", fill="x", padx=20, pady=10)
         modify_korean_entry.insert(0, "수정할 단어의 뜻")
-        #modify_korean_entry.bind("<Return>", ManagementModel.modify_enter(modify_word_entry, modify_korean_entry, modify_ex_entry))
+        modify_korean_entry.bind("<Return>", lambda e:ManagementModel.modify_enter(modify_word_entry, modify_korean_entry))
 
-        modify_ex_entry = tk.Entry(modify_box, bg="white", fg="black", bd=2, relief="flat")
-        modify_ex_entry.pack(side="left", fill="x", padx=20, pady=10)
-        modify_ex_entry.insert(0, "수정할 단어의 예문")
-        modify_ex_entry.bind("<Return>", ManagementModel.modify_enter(modify_word_entry, modify_korean_entry, modify_ex_entry))
 
         # CSV 파일 업로드 버튼
         upload_csv_icon = tk.PhotoImage(file="resource\csv_upload_btn.png").subsample(2)
