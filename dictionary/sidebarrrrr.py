@@ -76,7 +76,7 @@ def toggle_menu():
         canvas2.pack()
         canvas2.create_line(0, 0, 300, 0, fill='gray')
 
-        toggle_btn3 = tk.Button(toggle_menu_fm, text='오답노트', font=('Helvetica', 15, 'bold'), bd=0, bg='#838383', fg='black', activebackground='#838383', activeforeground='black', cursor='hand2', command=lambda: switch(indicator_lb=toggle_btn3_indicator_lb, parent_frame=toggle_menu_fm, page=lambda:btn3_page(pb)))
+        toggle_btn3 = tk.Button(toggle_menu_fm, text='즐겨찾기', font=('Helvetica', 15, 'bold'), bd=0, bg='#838383', fg='black', activebackground='#838383', activeforeground='black', cursor='hand2', command=lambda: switch(indicator_lb=toggle_btn3_indicator_lb, parent_frame=toggle_menu_fm, page=lambda:btn3_page(pb)))
         toggle_btn3.pack(anchor='center')
 
         toggle_btn3_indicator_lb = tk.Label(toggle_menu_fm, bg='#838383')

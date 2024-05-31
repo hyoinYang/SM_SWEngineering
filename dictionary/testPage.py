@@ -12,6 +12,7 @@ class TestModel:
     def __init__(self):
         self.combo_values = []
         self.questions = []
+        self.answers = []
         self.start_idx = 0
         self.part_size = 30
         self.total_words = len(pb.partmodel.dictionary)
@@ -21,8 +22,10 @@ class TestModel:
         for part_index in range(self.num_parts):
             start_index = part_index * self.part_size
             end_index = min((part_index + 1) * self.part_size, self.total_words)
-            part_questions = pb.partmodel.dictionary[start_index:end_index]
+            part_questions = pb.partmodel.sentence[start_index:end_index]
+            part_answer = pb.partmodel.dictionary[start_index:end_index]
             self.questions.extend(part_questions)
+            self.answers.extend(part_answer)
             self.combo_values.append("PART " + str(part_index + 1))
 
     #@staticmethod
@@ -38,7 +41,8 @@ class TestModel:
 
         # 선택된 파트에 해당하는 단어들을 questions 리스트에 추가
 
-        self.questions = pb.partmodel.dictionary[start_index:end_index] # 단어 들어있음
+        self.questions = pb.partmodel.sentence[start_index:end_index] # 단어 들어있음
+        self.answers = pb.partmodel.dictionary[start_index:end_index]
 
         self.update_questions()
         # 선택된 파트에 따라 question_num 재설정
@@ -52,14 +56,14 @@ class TestModel:
             # 답 업데이트
             input_box.unbind("<Return>")
         # 새로운 이벤트 핸들러 바인딩
-            input_box.bind("<Return>", partial(self.handle_enter, input_box = input_box,text=question))
+            input_box.bind("<Return>", partial(self.handle_enter, input_box = input_box,text=question, answer=self.answers))
             
 
-    def handle_enter(self,event,input_box,text):  # 입력 상자에서 엔터 키를 눌렀을 때의 동작
+    def handle_enter(self,event,input_box,text, answer):  # 입력 상자에서 엔터 키를 눌렀을 때의 동작
         user_input = input_box.get()  # 입력 상자에서 입력된 내용 가져오기
         input_box.delete(0, "end")  # 입력 상자 초기화
 
-        if user_input == text:  # 입력값이 정답과 동일하다면, 입력상자를 O로 초기화
+        if user_input == answer:  # 입력값이 정답과 동일하다면, 입력상자를 O로 초기화
             messagebox.showinfo("단어 테스트","맞았습니다 !")
         else:
             messagebox.showinfo("단어 테스트","틀렸습니다 !")
@@ -99,12 +103,13 @@ class TestView:
         for i in range(30):
             try:
                 question = self.test_model.questions[i]
-                self.create_scrollable_text(self.frame, i + self.test_model.start_idx, question)
+                answer = self.test_model.answers[i]
+                self.create_scrollable_text(self.frame, i + self.test_model.start_idx, question, answer)
             except(IndexError): 
                 continue
 
     # 초록색 박스 생성 함수
-    def create_scrollable_text(self, parent_frame, question_num, text):
+    def create_scrollable_text(self, parent_frame, question_num, text, answer):
         # 초록색 박스 생성
         green_box = tk.Frame(parent_frame, bg="white")
         green_box.pack(pady=5, fill="x")
@@ -128,14 +133,15 @@ class TestView:
         input_box = tk.Entry(green_box, bg="white", fg="black", bd=2)
         input_box.pack(side="top", fill="x", padx=20, pady=10)
         self.input_box_widgets.append(input_box)
-        input_box.bind("<Return>", partial(self.handle_enter, input_box = input_box,text=text))  # Enter 키에 대한 이벤트 핸들러 바인딩
+        input_box.bind("<Return>", partial(self.handle_enter, input_box = input_box,text=text, answer = answer))  # Enter 키에 대한 이벤트 핸들러 바인딩
 
-    def handle_enter(self,event,input_box,text):  # 입력 상자에서 엔터 키를 눌렀을 때의 동작
+    def handle_enter(self,event,input_box,text,answer):  # 입력 상자에서 엔터 키를 눌렀을 때의 동작
+        print("answer:", answer)
         #print(f"{text}에 대한 handle_enter")
         user_input = input_box.get()  # 입력 상자에서 입력된 내용 가져오기
         input_box.delete(0, "end")  # 입력 상자 초기화
 
-        if user_input == text:  # 입력값이 정답과 동일하다면, 입력상자를 O로 초기화
+        if user_input == answer:  # 입력값이 정답과 동일하다면, 입력상자를 O로 초기화
             messagebox.showinfo("단어 테스트","맞았습니다 !")
         else:
             messagebox.showinfo("단어 테스트","틀렸습니다 !")
