@@ -190,21 +190,25 @@ class PartDictController:
         word = self.model.word_texts[word_index].get("1.0",tk.END).replace("\n","")
         #sentence = self.model.sentence_texts[word_index].get("1.0",tk.END)
         self.model.dictionary_db.wrong_word_texts
-        if word in self.model.dictionary_db.wrong_word_texts: # 중복 처리가 안 됨...
-            messagebox.showinfo("단어장",f"{word}는 이미 즐겨찾기 목록에 있습니다 !")
-            return
         # ### mysql 디비추가함
         result = WordDB.add_bookmark_by_userName(username, word)
         if(result):
             messagebox.showinfo("단어장", "즐겨찾기 목록에 추가했습니다.")
+            self.model.dictionary_db.wrong_word_texts=[]
+            self.model.dictionary_db.wrong_sentence=[]
+            tuple_wrong_words = WordDB.get_all_bookmarks_word_by_userName(username)
+            tuple_wrong_sentences = WordDB.get_all_bookmarks_sentence_by_userName(username)
+
+            for word in tuple_wrong_words:
+                self.model.dictionary_db.wrong_word_texts.append(word[0])
+            for sen in tuple_wrong_sentences:
+                senList = list(sen)
+                newsen = '\n'.join(senList)
+                self.model.dictionary_db.wrong_sentence.append(newsen)
         else:
             messagebox.showinfo("단어장","즐겨찾기 목록에 이미 존재합니다.")
 
-
-        # self.model.dictionary_db.wrong_word_texts.append(word)
-        # self.model.dictionary_db.wrong_sentence.append(sentence)
-
-        # print(f"오답노트에 {word},{sentence}가 추가되었습니다.")
+        
 
     # 학습률 버튼
     def check_button_click(self,check_button,word_index):
