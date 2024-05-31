@@ -28,8 +28,6 @@ root.geometry('700x550')
 root.title('토익 단어장')
 root.configure(background="#FFFFFF")
 
-LoginController.is_admin=True
-LoginController.is_login=True
 
 def switch(indicator_lb, parent_frame, page):
 

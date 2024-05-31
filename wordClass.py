@@ -57,6 +57,19 @@ class WordDBModel:
             self.cursor.execute(sql, val)
             self.conn.commit()
             return "단어가 성공적으로 추가되었습니다."
+    def add_word_by_excel(self, word, meaning):
+        if self.check_word_exist(word):
+            return False
+        else:
+            example_sentence = make_sentence(word)
+            kor_example_sentence = translate_to_korean(example_sentence)
+            part = self.define_part()
+            id = self.define_id()
+            sql = "INSERT INTO words (eng_word, kor_word, example_sentence, kor_example_sentence, part, id) VALUES (%s, %s, %s, %s, %s, %s)"
+            val = (word, meaning, example_sentence, kor_example_sentence, part, id)
+            self.cursor.execute(sql, val)
+            self.conn.commit()
+            return True
 
     ####### READ #######
     def read_words_by_part(self, part):
@@ -353,7 +366,7 @@ class WordController:
         meaning = self.view.get_input("단어의 의미를 입력하세요: ")
         message = self.model.add_word(word, meaning)
         self.view.display_message(message)
-
+    
     ####### READ #######
     def read_words_by_part(self):
         part = self.view.get_input("읽을 파트를 입력하세요: ")
