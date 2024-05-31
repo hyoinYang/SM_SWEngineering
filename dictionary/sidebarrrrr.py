@@ -28,6 +28,9 @@ root.geometry('700x550')
 root.title('토익 단어장')
 root.configure(background="#FFFFFF")
 
+LoginController.is_admin=True
+LoginController.is_login=True
+
 def switch(indicator_lb, parent_frame, page):
 
     for child in parent_frame.winfo_children():
@@ -106,13 +109,13 @@ def toggle_menu():
         canvas5.create_line(0, 0, 300, 0, fill='gray')
 
         toggle_btn7 = tk.Button(toggle_menu_fm, text='로그아웃', font=('Helvetica', 15, 'bold'), bd=0, bg='#838383', fg='black', activebackground='#838383', activeforeground='black', cursor='hand2', command=lambda: switch(indicator_lb=toggle_btn7_indicator_lb, parent_frame=toggle_menu_fm, page=btn7_page))
-        toggle_btn7.place(x=100, y=440)
+        toggle_btn7.place(x=100, y=445)
 
         toggle_btn7_indicator_lb = tk.Label(toggle_menu_fm, bg='#838383')
         toggle_btn7_indicator_lb.place(x=105, y=480, width=80, height=2)
 
         canvas7 = tk.Canvas(toggle_menu_fm, width=300, height=2, highlightthickness=0, bg='black')
-        canvas7.pack()
+        canvas7.place(x=0, y=440)
         canvas7.create_line(0, 0, 300, 0, fill='gray')
 
         # 관리자 전용 기능을 추가합니다. 사용자가 관리자일 경우에만 보입니다.
@@ -121,8 +124,11 @@ def toggle_menu():
             canvas8.place(x=0, y=390)
             canvas8.create_line(0, 0, 300, 0, fill='gray')
 
-            toggle_btn8 = tk.Button(toggle_menu_fm, text='관리자 전용 기능', font=('Helvetica', 15, 'bold'), bd=0, bg='#838383', fg='black', activebackground='#838383', activeforeground='black', cursor='hand2', command=lambda:switch(indicator_lb=toggle_btn7_indicator_lb, parent_frame=toggle_menu_fm, page=admin_function))
-            toggle_btn8.place(x=100, y=400)
+            toggle_btn8 = tk.Button(toggle_menu_fm, text='관리자 전용 기능', font=('Helvetica', 15, 'bold'), bd=0, bg='#838383', fg='black', activebackground='#838383', activeforeground='black', cursor='hand2', command=lambda:switch(indicator_lb=toggle_btn8_indicator_lb, parent_frame=toggle_menu_fm, page=admin_function))
+            toggle_btn8.place(x=75, y=400)
+
+            toggle_btn8_indicator_lb = tk.Label(toggle_menu_fm, bg='#838383')
+            toggle_btn8_indicator_lb.place(x=105, y=435, width=80, height=2)
 
         window_height = 700
         menu_width = 300

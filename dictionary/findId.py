@@ -65,16 +65,11 @@ class FindView:
         self.birth_entry.insert(0, "생년월일")
 
         # 아이디 찾기 버튼
-        find_id_icon = tk.PhotoImage(file="resource/signup_btn.png").subsample(2)
-        find_id_button = tk.Button(self.root, text="                 아이디 찾기                 ", bg="#838383", relief="flat", bd=0, command=lambda:FindModel.validate_find_id(self.name_entry, self.birth_entry), cursor="hand2")
-        find_id_button.image = find_id_icon
-
+        find_id_button = tk.Button(self.root, font=('Helvetica', 10, 'bold'), text="                 아이디 찾기                 ", bg="#838383", relief="flat", bd=0, command=lambda:FindModel.validate_find_id(self.name_entry, self.birth_entry), cursor="hand2")
         find_id_button.pack(pady=10)
 
         # 비밀번호 찾기 버튼
-        find_password_icon = tk.PhotoImage(file="resource/signup_btn.png").subsample(2)
-        find_password_button = tk.Button(self.root, text="                 비밀번호 찾기                 ", bg="#838383", relief="flat", bd=0, command=lambda:FindModel.validate_find_password(self, self.root), cursor="hand2")
-        find_password_button.image = find_password_icon
+        find_password_button = tk.Button(self.root, font=('Helvetica', 10, 'bold'), text="               비밀번호 찾기               ", bg="#838383", relief="flat", bd=0, command=lambda:FindModel.validate_find_password(self, self.root), cursor="hand2")
 
         find_password_button.pack(pady=10)
 

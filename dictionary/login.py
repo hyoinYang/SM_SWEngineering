@@ -93,25 +93,22 @@ class LoginView:
         self.password_entry.bind("<Return>",lambda event: LoginModel.validate_login(self.username_entry, self.password_entry))
 
         # 로그인 버튼
-        login_icon = tk.PhotoImage(file="resource/login_btn.png").subsample(2)
-        login_button = tk.Button(self.root, image=login_icon, relief="flat", bd=0, command=lambda: LoginModel.validate_login(self.username_entry, self.password_entry), cursor="hand2")
-        login_button.image = login_icon
+        login_button = tk.Button(self.root, font=('Helvetica', 13, 'bold'), text="            로그인            ",  bg="#838383", relief="flat", bd=0, command=lambda: LoginModel.validate_login(self.username_entry, self.password_entry), cursor="hand2")
   
         login_button.pack(pady=20)
 
         # 회원가입 버튼
-        signup_icon = tk.PhotoImage(file="resource/signup_btn.png").subsample(2)
-        signup_button = tk.Button(self.root, image=signup_icon, relief="flat", bd=0, command=lambda:LoginModel.validate_signup(self, self.root), cursor="hand2")
-        signup_button.image = signup_icon
+        signup_button = tk.Button(self.root, font=('Helvetica', 13, 'bold'), text="           회원가입           ",  bg='#838383',relief="flat", bd=0, command=lambda:LoginModel.validate_signup(self, self.root), cursor="hand2")
+
 
         signup_button.pack(pady=10)
 
         # 아이디 찾기 버튼
-        find_id_button = tk.Button(self.root, text="아이디 찾기", relief="flat", bd=0, command=lambda:LoginModel.validate_find_id(self, self.root), cursor="hand2")
+        find_id_button = tk.Button(self.root,font=('Helvetica', 13, 'bold'), text="         아이디 찾기         ",  bg='#838383', relief="flat", bd=0, command=lambda:LoginModel.validate_find_id(self, self.root), cursor="hand2")
         find_id_button.pack(pady=10)
 
         # 비밀번호 찾기 버튼
-        find_id_password = tk.Button(self.root, text="비밀번호 찾기", relief="flat", bd=0, command=lambda:LoginModel.validate_find_password(self, self.root), cursor="hand2")
+        find_id_password = tk.Button(self.root, font=('Helvetica', 13, 'bold'), text="        비밀번호 찾기        ",  bg='#838383', relief="flat", bd=0, command=lambda:LoginModel.validate_find_password(self, self.root), cursor="hand2")
         find_id_password .pack(pady=10)
 
 

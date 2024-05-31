@@ -9,8 +9,6 @@ from wordClass import WordDBModel
 
 # ----------------------------- Model -----------------------------
 class ManagementModel:
-    gear_icon_path = "resource/gear_icon.png"
-    menu_icon_path = "resource/sidebar_icon.png"
     
     # 삭제하기
     def delete_enter(del_entry):
@@ -88,9 +86,7 @@ class ManagementView:
         self.root = root
         self.setup_ui()
 
-    def setup_ui(self):
-
-        # -------------------------------- GUI 초기화 --------------------------------
+    def setup_ui(self): # GUI 초기화
         """root = tk.Tk()
         root.title("단어 관리")
         root.geometry("700x550")
@@ -99,20 +95,14 @@ class ManagementView:
         style = ttk.Style()
         style.theme_use('clam')
 
-        # -------------------------------- 내용 --------------------------------
-        # Canvas 생성
         canvas = tk.Canvas(root)
         canvas.pack(side="left", fill="both", expand=True)
-
-        # 내부 프레임 생성
         frame = tk.Frame(canvas)
         canvas.create_window((50, 0), window=frame, anchor="nw")
 
-        # 회색 박스 생성
-        delete_box = tk.Frame(frame, bg="#838383")
+        delete_box = tk.Frame(frame, bg="#838383") # "단어 삭제" 프레임
         delete_box.pack(pady=30, fill="x")
 
-        # 단어 삭제 칸
         del_text_box = tk.Label(delete_box, text="단어 삭제하기", font=("Helvetica", 15), bg="#838383")
         del_text_box.pack(padx=5, pady=10)
 
@@ -121,8 +111,7 @@ class ManagementView:
         del_entry.pack(padx=20, pady=10)
         del_entry.bind("<Return>", lambda e:ManagementModel.delete_enter(del_entry))
 
-        # 단어 추가 칸
-        add_box = tk.Frame(frame, bg="gray")
+        add_box = tk.Frame(frame, bg="gray") # "단어 추가" 프레임
         add_box.pack(pady=30, fill="x")
 
         add_text_box = tk.Label(add_box, text="단어 추가하기", font=("Helvetica", 15), bg="#838383")
@@ -139,31 +128,24 @@ class ManagementView:
         add_korean_entry.bind("<Return>", lambda e:ManagementModel.add_enter(add_word_entry, add_korean_entry))
         #add_korean_entry.bind("<Return>", ManagementModel.add_enter(add_word_entry, add_korean_entry, add_ex_entry))
 
-        # 단어 수정 칸
-        modify_box = tk.Frame(frame, bg="gray")
+        modify_box = tk.Frame(frame, bg="gray") # "단어 수정" 프레임
         modify_box.pack(pady=30, fill="x")
 
         text_box = tk.Label(modify_box, text="단어 수정하기", font=("Helvetica", 15), bg="#838383")
         text_box.pack(padx=20, pady=10)
 
-        # 입력 상자(수정할 단어) 생성
         modify_word_entry = tk.Entry(modify_box, bg="white", fg="black", bd=2, relief="flat")
         modify_word_entry.pack(side="left", fill="x", padx=20, pady=10)
         modify_word_entry.insert(0, "수정할 단어")
         modify_word_entry.bind("<Return>", lambda e:ManagementModel.modify_enter(modify_word_entry, modify_korean_entry))
 
-        # 입력 상자(수정할 내용) 생성
         modify_korean_entry = tk.Entry(modify_box, bg="white", fg="black", bd=2, relief="flat")
         modify_korean_entry.pack(side="left", fill="x", padx=20, pady=10)
         modify_korean_entry.insert(0, "수정할 단어의 뜻")
         modify_korean_entry.bind("<Return>", lambda e:ManagementModel.modify_enter(modify_word_entry, modify_korean_entry))
 
-
-        # CSV 파일 업로드 버튼
-        upload_csv_icon = tk.PhotoImage(file="resource\csv_upload_btn.png").subsample(2)
-        upload_csv_button = tk.Button(canvas, relief = "flat", bd = 0, text="csv 파일 업로드", command=lambda:ManagementController.upload_csv_file(), cursor="hand2")
-        #upload_csv_button = tk.Button(canvas, image=upload_csv_icon, relief="flat", bd=0, command=lambda:ManagementController.upload_csv_file(), cursor="hand2")
-        upload_csv_button.image = upload_csv_icon
+        #upload_csv_icon = tk.PhotoImage(file="resource\csv_upload_btn.png").subsample(2) # csv 파일 업로드 버튼
+        upload_csv_button = tk.Button(canvas, relief = "flat", bd = 0, font=('Helvetica', 15, 'bold'), text="csv 파일 업로드",  bg='#838383', command=lambda:ManagementController.upload_csv_file(), cursor="hand2")
         upload_csv_button.place(x=500, y=450)
 
         

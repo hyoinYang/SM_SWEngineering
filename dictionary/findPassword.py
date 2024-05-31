@@ -66,9 +66,7 @@ class View:
         self.birth_entry.insert(0, "생년월일")
 
         # 비밀번호 찾기 버튼
-        signup_icon = tk.PhotoImage(file="resource/signup_btn.png").subsample(2)
-        signup_button = tk.Button(self.root, text="                 비밀번호 찾기                 ", bg="#838383", relief="flat", bd=0, command=lambda:Model.validate_find_password(self.root, self.username_entry, self.birth_entry, self.name_entry), cursor="hand2")
-        signup_button.image = signup_icon
+        signup_button = tk.Button(self.root, font=('Helvetica', 15, 'bold'), text="       비밀번호 찾기       ", bg="#838383", relief="flat", bd=0, command=lambda:Model.validate_find_password(self.root, self.username_entry, self.birth_entry, self.name_entry), cursor="hand2")
 
         signup_button.pack(pady=10)
 
