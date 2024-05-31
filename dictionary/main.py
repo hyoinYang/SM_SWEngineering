@@ -6,22 +6,11 @@
 #6 관리자 쪽 토글메뉴는 일단 보류 해놨음
 
 import tkinter as tk
-from tkinter import ttk
-from PIL import Image, ImageTk
-from tkinter import ttk, messagebox
-from signup import SignupController
-import webbrowser
+from tkinter import messagebox
 from speak_word import SpeakWord
-import random
-from part_dict import PartDictController
-from part_dict import PartDictModel
-from titlebar import TitleView
 from login import LoginController
-import math
-from tkinter.ttk import Progressbar, Label
 import sys, os
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
-from examInfoClass import ExamDBModel
 
 root = tk.Tk()
 root.geometry('700x550')

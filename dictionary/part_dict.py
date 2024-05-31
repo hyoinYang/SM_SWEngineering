@@ -52,6 +52,7 @@ class PartDictView:
         self.sequence_button = tk.Button(frame,bg="white",text="순행",font=("Helvetica", 15),
         command=lambda:self.controller.sequence_button_click(self.sequence_button,model.word,model.sentence)) # 순행 버튼 생성
     
+        #print(f"{self.model.part_index}")
     # whitebox (단어, 버튼이 있는 box) 위치 설정
     def setting_white_box(self):
         self.white_box.pack(pady=10,fill="x")

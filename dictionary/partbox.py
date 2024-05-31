@@ -3,11 +3,9 @@ import tkinter as tk
 import tkinter as ttk
 from part_dict import PartDictController
 from part_dict import PartDictModel
-from titlebar import TitleView
-from speak_word import SpeakWord
 import math
 from login import LoginModel
-import sys, os
+import sys, os, time
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from wordClass import WordDBModel
 
@@ -94,6 +92,7 @@ class DictionaryMainController:
         self.setting_frame()
         
         for part_index in range(0,math.ceil(self.dictionary_db.word_cnt/30)): # 각 파트에 단어 30개만 있다고 가정. 
+            time.sleep(0.1)
             if part_index == int(self.dictionary_db.word_cnt/30): # 마지막 케이스 일 때, 나중에 /120으로 수정 -> 마지막 케이스는 단어 개수가 딱 120개가 아니기 때문
                 part_dict_model = PartDictModel(part_index,self.dictionary_db,self.dictionary_db.word_cnt % 30) # 한 파트의 모델나중에 10 -> 120으로 수정
             else:

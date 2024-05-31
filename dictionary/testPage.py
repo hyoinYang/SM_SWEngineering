@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-import part_dict as star
 import partbox as pb
 import math
 from functools import partial
@@ -49,14 +48,14 @@ class TestModel:
         self.question_num = min(end_index - start_index, 30) #
 
     def update_questions(self):
-        for i,question,text_box,input_box in zip(list(range(0,len(self.questions))),self.questions,self.text_widgets,self.input_box_widgets):
+        for i,question,answers,text_box,input_box in zip(list(range(0,len(self.questions))),self.questions,self.answers,self.text_widgets,self.input_box_widgets):
             text_box.config(state=tk.NORMAL)
             text_box.delete("1.0",tk.END)
             text_box.insert(tk.END, question)
             # 답 업데이트
             input_box.unbind("<Return>")
         # 새로운 이벤트 핸들러 바인딩
-            input_box.bind("<Return>", partial(self.handle_enter, input_box = input_box,text=question, answer=self.answers))
+            input_box.bind("<Return>", partial(self.handle_enter, input_box = input_box,text=question, answer=answers))
             
 
     def handle_enter(self,event,input_box,text, answer):  # 입력 상자에서 엔터 키를 눌렀을 때의 동작

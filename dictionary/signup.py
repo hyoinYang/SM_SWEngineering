@@ -1,10 +1,9 @@
-from titlebar import TitleView
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import messagebox
 import sys, os
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from userClass import UserModel
-from datetime import datetime
+
 
 # ----------------------------- Model -----------------------------
 class SignupModel:

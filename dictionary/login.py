@@ -1,6 +1,5 @@
-from titlebar import TitleView
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import messagebox
 from signup import SignupController
 import sys, os
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
