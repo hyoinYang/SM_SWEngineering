@@ -195,11 +195,17 @@ class WordDBModel:
             self.conn.commit()
             return True
     def add_bookmark_by_userName(self, mem_id, eng_word):
-        insert_query = "INSERT INTO Bookmark_words (eng_word, member_id) VALUES (%s, %s)"
-        val = (eng_word, mem_id)
-        self.cursor.execute(insert_query, val)
-        self.conn.commit()
-        return True
+        query = "select * from Bookmark_words where member_id=%s and eng_word=%s"
+        self.cursor.execute(query, (mem_id, eng_word))
+        result = self.cursor.fetchone()
+        if(result):
+            return False
+        else:
+            insert_query = "INSERT INTO Bookmark_words (eng_word, member_id) VALUES (%s, %s)"
+            val2 = (eng_word, mem_id)
+            self.cursor.execute(insert_query, val2)
+            self.conn.commit()
+            return True
     
     def get_all_bookmarks(self, mem_id):
         self.cursor.execute("SELECT user_id FROM sessions WHERE session_id=%s",(mem_id,))

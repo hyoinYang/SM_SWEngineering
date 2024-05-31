@@ -194,7 +194,11 @@ class PartDictController:
             messagebox.showinfo("단어장",f"{word}는 이미 즐겨찾기 목록에 있습니다 !")
             return
         # ### mysql 디비추가함
-        WordDB.add_bookmark_by_userName(username, word)
+        result = WordDB.add_bookmark_by_userName(username, word)
+        if(result):
+            messagebox.showinfo("단어장", "즐겨찾기 목록에 추가했습니다.")
+        else:
+            messagebox.showinfo("단어장","즐겨찾기 목록에 이미 존재합니다.")
 
 
         # self.model.dictionary_db.wrong_word_texts.append(word)
