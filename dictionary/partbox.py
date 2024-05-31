@@ -21,6 +21,7 @@ class PartView: # part_index는 part 몇 인지, learend_word_list는 각 part�
         command=lambda:part_controller.part_event()) #part controller에 한 파트의 단어,예문 넣었음
         self.learned_word = dictionary_db.learned_word_list[part_dict_model.part_index] # 특정 파트의 배운 단어
         self.progress_label = Label(self.white_box, text=f"학습률: {self.learned_word} / 30 [ {int((self.learned_word/30)*100)}% ]",background="white",font="Helvetica") # 학습률 출력
+        
         self.progress_bar = Progressbar(self.white_box, orient="horizontal", mode="determinate",length=300) # 학습률에 따른 게이지바
 
     # white_box는 part, 진행률, 학습률이 들어갈 box
@@ -92,7 +93,6 @@ class DictionaryMainController:
         self.setting_frame()
         
         for part_index in range(0,math.ceil(self.dictionary_db.word_cnt/30)): # 각 파트에 단어 30개만 있다고 가정. 
-            time.sleep(0.1)
             if part_index == int(self.dictionary_db.word_cnt/30): # 마지막 케이스 일 때, 나중에 /120으로 수정 -> 마지막 케이스는 단어 개수가 딱 120개가 아니기 때문
                 part_dict_model = PartDictModel(part_index,self.dictionary_db,self.dictionary_db.word_cnt % 30) # 한 파트의 모델나중에 10 -> 120으로 수정
             else:
