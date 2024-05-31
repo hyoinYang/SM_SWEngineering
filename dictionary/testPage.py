@@ -123,7 +123,7 @@ class TestView:
         question_label.pack(side="left", padx=10, pady=10)
 
         # 스크롤 가능한 텍스트 박스 생성
-        text_box = tk.Text(green_box, bg="lightgreen", fg="white", wrap="word", height=4, padx=20, pady=20)
+        text_box = tk.Text(green_box, font=('Helvetica', 10, 'bold'), bg="lightgreen", fg="white", wrap="word", height=4, padx=20, pady=20)
         text_box.insert("end", text)
         text_box.config(state="disabled")
         text_box.pack(side="top", fill="both", expand=True)
